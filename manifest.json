@@ -1,0 +1,9 @@
+{
+  "name": "Questionnaire d'Évaluation",
+  "short_name": "Questionnaire",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "icons": []
+}
