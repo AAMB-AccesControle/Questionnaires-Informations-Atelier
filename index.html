@@ -136,7 +136,7 @@
         <div id="test-banner" class="test-banner">🧪 MODE TEST : Champs pré-remplis automatiquement</div>
         
         <div class="header">
-            <div class="header-top">AAMB - JTB 2026 - Besançon v.0.09</div>
+            <div class="header-top">AAMB - JTB 2026 - Besançon v.0.10</div>
             <div class="header-content">
                 <img src="logo-aamb.png" alt="Logo AAMB" class="logo">
                 <h1>🎓 Formulaire Animateur d'Atelier</h1>
@@ -445,12 +445,18 @@
         }
 
         async function saveData(data) {
+            Logger.log("Envoi des données...", data);
+            
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain' },
+                mode: 'no-cors',  // ← Important !
+                headers: { 
+                    'Content-Type': 'text/plain'  // ← Important pour éviter les preflight CORS
+                },
                 body: JSON.stringify(data)
             });
+            
+            Logger.log("Réponse reçue");
             return true;
         }
 
