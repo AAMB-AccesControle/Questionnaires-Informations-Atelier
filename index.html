@@ -157,6 +157,11 @@
                     <div class="form-group"><label for="trainerName">Nom et prénom du formateur *</label><input type="text" id="trainerName" required></div>
                     <div class="form-group"><label for="trainerRole">Fonction du formateur au sein de l'entreprise *</label><input type="text" id="trainerRole" required></div>
                     <div class="form-group"><label for="workshopTitle">Titre de l'atelier *</label><input type="text" id="workshopTitle" required></div>
+                    <div class="form-group">
+                        <label for="logoUpload">Logo de l'entreprise *</label>
+                        <input type="file" id="logoUpload" accept="image/*" required style="padding: 10px; border: 2px dashed #e0e0e0; border-radius: 8px; background: #f8f9fa;">
+                        <small style="color: #666; display: block; margin-top: 5px;">Format accepté : JPG, PNG, SVG. Taille max : 5MB</small>
+                    </div>
                     <div class="form-group"><label for="email">Adresse e-mail *</label><input type="email" id="email" required></div>
                     <div class="form-group">
                         <label for="description">Description de l'atelier (environ 100 mots) *</label>
@@ -189,6 +194,11 @@
                         <div class="radio-group">
                             <label class="radio-item"><input type="radio" name="diffusion" value="OUI" required> Oui, j'accepte</label>
                             <label class="radio-item"><input type="radio" name="diffusion" value="NON" required> Non, je n'accepte pas</label>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label for="supportUpload">Support de présentation *</label>
+                            <input type="file" id="supportUpload" accept=".pdf,.ppt,.pptx,.doc,.docx" required style="padding: 10px; border: 2px dashed #e0e0e0; border-radius: 8px; background: #f8f9fa;">
+                            <small style="color: #666; display: block; margin-top: 5px;">Formats acceptés : PDF, PowerPoint, Word. Taille max : 10MB</small>
                         </div>
                     </div>
                 </div>
@@ -235,7 +245,7 @@
 
     <script>
         // ⚠️ REMPLACEZ CETTE URL PAR CELLE DE VOTRE NOUVEAU GOOGLE APPS SCRIPT
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxiN0pnqMkaSoy3yP24vCJvRIleZkUGYUd-dt0BRX2eKXQwooqQvuIHb-87A11bTX94/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdHM3Mzi8kSiG-j8B1jRW5sNIS5i3tpploV6OYIIMdj0c346DcL3tUzoG7WUfF3JyW/exec';
 
         let editToken = '';
         let isEditMode = false;
@@ -325,10 +335,23 @@
                 alert('Veuillez indiquer votre accord de diffusion pour le support de formation.');
                 return;
             }
-
+        
+            // Vérification des fichiers uploadés
+            const logoFile = document.getElementById('logoUpload').files[0];
+            const supportFile = document.getElementById('supportUpload').files[0];
+            
+            if (!logoFile) {
+                alert('Veuillez uploader le logo de l\'entreprise.');
+                return;
+            }
+            
+            if (!supportFile) {
+                alert('Veuillez uploader le support de présentation.');
+                return;
+            }
+        
             const questions = [], answers = [], correctAnswers = [];
             
-            // BOUCLE LIMITÉE À 2 QUESTIONS
             for (let i = 1; i <= 2; i++) {
                 const question = document.getElementById(`q${i}`).value.trim();
                 if (!question) { 
@@ -336,11 +359,11 @@
                     return; 
                 }
                 questions.push(question);
-
+        
                 const qAnswers = [], qCorrect = [];
                 let filledCount = 0;
                 let checkedFilledCount = 0;
-
+        
                 for (let j = 1; j <= 8; j++) {
                     const answer = document.getElementById(`q${i}a${j}`).value.trim();
                     const isCorrect = document.getElementById(`q${i}a${j}_check`).checked;
@@ -353,7 +376,7 @@
                         if (isCorrect) checkedFilledCount++;
                     }
                 }
-
+        
                 if (filledCount < 3) {
                     alert(`⚠️ La question ${i} doit contenir au moins 3 propositions. (Actuellement : ${filledCount})`);
                     return;
@@ -362,11 +385,15 @@
                     alert(`⚠️ Vous devez cocher au moins une bonne réponse parmi les propositions saisies pour la question ${i}.`);
                     return;
                 }
-
+        
                 answers.push(qAnswers);
                 correctAnswers.push(qCorrect);
             }
-
+        
+            // Conversion des fichiers en base64
+            const logoBase64 = await fileToBase64(logoFile);
+            const supportBase64 = await fileToBase64(supportFile);
+        
             const data = {
                 token: editToken || generateToken(),
                 timestamp: new Date().toISOString(),
@@ -379,12 +406,22 @@
                 description: document.getElementById('description').value.trim(),
                 remarks: document.getElementById('remarks').value.trim(),
                 diffusionAgreement: diffusionAgreement.value,
+                logoFile: {
+                    name: logoFile.name,
+                    type: logoFile.type,
+                    base64: logoBase64
+                },
+                supportFile: {
+                    name: supportFile.name,
+                    type: supportFile.type,
+                    base64: supportBase64
+                },
                 questions, answers, correctAnswers
             };
-
+        
             document.getElementById('step2-section').classList.add('hidden');
             document.getElementById('loading-section').classList.remove('hidden');
-
+        
             try {
                 await saveData(data);
                 document.getElementById('loading-section').classList.add('hidden');
@@ -395,6 +432,16 @@
                 document.getElementById('step2-section').classList.remove('hidden');
                 document.getElementById('message-container').innerHTML = `<div class="error-message"><h3>❌ Erreur</h3><p>${error.message}</p></div>`;
             }
+        }
+        
+        // Fonction utilitaire pour convertir un fichier en base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
         }
 
         async function saveData(data) {
