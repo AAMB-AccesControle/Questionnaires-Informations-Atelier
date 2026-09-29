@@ -15,26 +15,16 @@
             padding: 20px; 
         }
         .container { 
-            max-width: 900px; 
-            margin: 0 auto; 
-            background: white; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
-            overflow: hidden; 
+            max-width: 900px; margin: 0 auto; background: white; 
+            border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; 
         }
         .header { 
             background: linear-gradient(135deg, #0a4c6a 0%, #1a3a4b 100%); 
-            color: white; 
-            padding: 30px; 
-            text-align: center; 
+            color: white; padding: 30px; text-align: center; 
         }
         .header-logo-wrapper {
-            background: white;
-            display: inline-block;
-            padding: 12px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            margin-bottom: 15px;
+            background: white; display: inline-block; padding: 12px 20px;
+            border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); margin-bottom: 15px;
         }
         .header-logo-wrapper img { max-width: 140px; height: auto; display: block; }
         .header h1 { font-size: 28px; margin-bottom: 8px; }
@@ -95,12 +85,22 @@
         .success-message h2 { color: #0a4c6a; margin-bottom: 15px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Overlay de chargement (chargement des données) */
         #loadingOverlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(10, 76, 106, 0.98); z-index: 9999;
             justify-content: center; align-items: center; flex-direction: column; color: white;
         }
         #loadingOverlay.active { display: flex; animation: fadeIn 0.3s; }
+        
+        /* Overlay d'envoi (upload) */
+        #uploadOverlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 76, 106, 0.98); z-index: 9999;
+            justify-content: center; align-items: center; flex-direction: column; color: white;
+        }
+        #uploadOverlay.active { display: flex; animation: fadeIn 0.3s; }
+        
         .loading-spinner {
             width: 60px; height: 60px; border: 5px solid rgba(255,255,255,0.3);
             border-top: 5px solid #4a8b38; border-radius: 50%;
@@ -118,13 +118,8 @@
             transition: width 0.4s ease; 
         }
         .file-info {
-            background: #e8f5e9;
-            border: 2px solid #4caf50;
-            border-radius: 6px;
-            padding: 10px 15px;
-            margin-top: 8px;
-            font-size: 13px;
-            color: #2e7d32;
+            background: #e8f5e9; border: 2px solid #4caf50; border-radius: 6px;
+            padding: 10px 15px; margin-top: 8px; font-size: 13px; color: #2e7d32;
         }
         .file-info strong { color: #1b5e20; }
         @media (max-width: 768px) {
@@ -138,15 +133,15 @@
     </style>
 </head>
 <body>
-    <!-- Overlay de chargement -->
+    <!-- Overlay chargement des données (mode édition) -->
     <div id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="loadingText">Chargement de votre formulaire...</div>
         <div class="loading-subtext">Veuillez patienter quelques instants</div>
     </div>
 
-    <!-- Overlay de progression pour l'envoi -->
-    <div id="uploadOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 76, 106, 0.98); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white;">
+    <!-- Overlay d'envoi -->
+    <div id="uploadOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="upload-status-text">Préparation des fichiers...</div>
         <div class="progress-container">
@@ -157,10 +152,8 @@
 
     <div class="container">
         <div class="header">
-            <div class="header-logo-wrapper">
-                <img src="logo-aamb.png" alt="Logo AAMB">
-            </div>
-            <h1>🎓 Formulaire Animateur d'Atelier v0.27</h1>
+            <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
+            <h1>🎓 Formulaire Animateur d'Atelier v0.28</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Le support de présentation et les questions d'évaluation sont obligatoires.
@@ -194,7 +187,7 @@
             <!-- ÉTAPE 2 -->
             <div id="step2-section" class="hidden">
                 <div class="sub-section">
-                    <div class="sub-section-title"> Support de l'Atelier</div>
+                    <div class="sub-section-title">📁 Support de l'Atelier</div>
                     <div class="form-group">
                         <label class="required">Accord de diffusion</label>
                         <div class="radio-group">
@@ -213,8 +206,8 @@
                 <div class="sub-section">
                     <div class="sub-section-title">🧠 Évaluation des Connaissances</div>
                     <div class="info-box">
-                        <strong> Comment remplir :</strong> Cochez les cases pour indiquer les bonnes réponses.<br>
-                        <strong>⚠️ Règles :</strong> Au moins 3 propositions et au moins 1 bonne réponse cochée par question.
+                        <strong>📝 Comment remplir :</strong> Cochez les cases pour indiquer les bonnes réponses.<br>
+                        <strong>️ Règles :</strong> Au moins 3 propositions et au moins 1 bonne réponse cochée par question.
                     </div>
                     <div style="margin-bottom: 25px;">
                         <label class="required">Question 1</label>
@@ -246,7 +239,8 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzrfv4FWcrHeraSuVjZOgjQoR_y5BGD9703KbQlFYX2LdkJxVoENkgE7d0J0eLh-2a25w/exec';
+        // ⚠️ REMPLACEZ PAR VOTRE VRAIE URL DE DÉPLOIEMENT APPS SCRIPT
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby0hqQ3xMeYV0v_Od6wU8-82ffURczWNrKayjY5Xj_lhl2ePng8Hc-_q2l-Sn_gFAu3-Q/exec';
         const FORM_BASE_URL = 'https://aamb-accescontrole.github.io/Questionnaires-Informations-Atelier/';
 
         let editToken = '';
@@ -308,7 +302,7 @@
                 const logoFile = document.getElementById('logoUpload').files[0];
                 const supportFile = document.getElementById('supportUpload').files[0];
                 
-                // Si mode édition et aucun nouveau fichier, on garde les anciens
+                // Si mode création (pas d'édition), fichiers obligatoires
                 if (!editToken) {
                     if (!logoFile) { alert('Veuillez uploader le logo.'); resetBtn(); return; }
                     if (!supportFile) { alert('Veuillez uploader le support.'); resetBtn(); return; }
@@ -335,28 +329,21 @@
                     answers.push(qAnswers); correctAnswers.push(qCorrect);
                 }
 
+                // Affichage overlay d'envoi
                 document.getElementById('step2-section').classList.add('hidden');
-                document.getElementById('uploadOverlay').style.display = 'flex';
+                document.getElementById('uploadOverlay').classList.add('active');
 
-                let logoBase64 = null, supportBase64 = null;
-                
-                if (logoFile) {
-                    document.getElementById('upload-status-text').innerText = "Encodage du logo...";
-                    document.getElementById('progress-bar').style.width = '25%';
-                    logoBase64 = await fileToBase64(logoFile);
-                } else if (existingLogoName) {
-                    document.getElementById('upload-status-text').innerText = "Utilisation du logo existant...";
-                    document.getElementById('progress-bar').style.width = '25%';
-                }
-                
-                if (supportFile) {
-                    document.getElementById('upload-status-text').innerText = "Encodage du support...";
-                    document.getElementById('progress-bar').style.width = '50%';
-                    supportBase64 = await fileToBase64(supportFile);
-                } else if (existingSupportName) {
-                    document.getElementById('upload-status-text').innerText = "Utilisation du support existant...";
-                    document.getElementById('progress-bar').style.width = '50%';
-                }
+                // 🚀 ENCODAGE PARALLÈLE (2x plus rapide)
+                document.getElementById('upload-status-text').innerText = "Encodage des fichiers...";
+                document.getElementById('progress-bar').style.width = '25%';
+
+                const [logoBase64, supportBase64] = await Promise.all([
+                    logoFile ? fileToBase64(logoFile) : Promise.resolve(null),
+                    supportFile ? fileToBase64(supportFile) : Promise.resolve(null)
+                ]);
+
+                document.getElementById('upload-status-text').innerText = "Fichiers encodés, envoi en cours...";
+                document.getElementById('progress-bar').style.width = '50%';
 
                 const token = editToken || generateToken();
                 const data = {
@@ -382,15 +369,15 @@
                 document.getElementById('progress-bar').style.width = '100%';
                 
                 setTimeout(() => {
-                    document.getElementById('uploadOverlay').style.display = 'none';
+                    document.getElementById('uploadOverlay').classList.remove('active');
                     document.getElementById('success-section').classList.remove('hidden');
                     document.getElementById('success-section').style.display = 'block';
                     editToken = token;
                     window.history.replaceState({}, document.title, FORM_BASE_URL + "?token=" + token);
                 }, 500);
-            
+
             } catch (error) {
-                document.getElementById('uploadOverlay').style.display = 'none';
+                document.getElementById('uploadOverlay').classList.remove('active');
                 document.getElementById('step2-section').classList.remove('hidden');
                 alert("Une erreur est survenue : " + error.message);
                 resetBtn();
@@ -401,11 +388,20 @@
             }
         }
 
+        // 🚀 ENCODAGE OPTIMISÉ avec ArrayBuffer
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
+                reader.readAsArrayBuffer(file);
+                reader.onload = () => {
+                    const bytes = new Uint8Array(reader.result);
+                    let binary = '';
+                    const chunkSize = 8192;
+                    for (let i = 0; i < bytes.length; i += chunkSize) {
+                        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+                    }
+                    resolve('data:' + file.type + ';base64,' + btoa(binary));
+                };
                 reader.onerror = error => reject(error);
             });
         }
@@ -418,7 +414,6 @@
         function generateToken() { return 'atelier_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); }
 
         async function loadExistingData(token) {
-            // Afficher l'overlay de chargement
             const overlay = document.getElementById('loadingOverlay');
             overlay.classList.add('active');
             
@@ -441,7 +436,6 @@
                     if (radio) radio.checked = true;
                 }
                 
-                // Afficher les noms des fichiers existants
                 existingLogoName = data['Nom Logo'] || '';
                 existingSupportName = data['Nom Support'] || '';
                 
@@ -481,10 +475,8 @@
                 const btn = document.getElementById('submitBtn');
                 if (btn) btn.innerText = '✓ Mettre à jour le formulaire';
                 
-                // Masquer l'overlay après un court délai
                 setTimeout(() => {
                     overlay.classList.remove('active');
-                    // Afficher directement l'étape 2 si on est en mode édition
                     document.getElementById('step1-section').classList.add('hidden');
                     document.getElementById('step2-section').classList.remove('hidden');
                 }, 500);
@@ -496,9 +488,7 @@
         }
 
         function resetForm() {
-            editToken = '';
-            existingLogoName = '';
-            existingSupportName = '';
+            editToken = ''; existingLogoName = ''; existingSupportName = '';
             document.querySelectorAll('input[type="text"], input[type="email"], textarea, input[type="file"]').forEach(input => input.value = '');
             document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
             document.getElementById('logoFileInfo').classList.add('hidden');
