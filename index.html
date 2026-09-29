@@ -242,7 +242,7 @@
             <div class="header-logo-wrapper">
                 <img src="logo-aamb.png" alt="Logo AAMB">
             </div>
-            <h1>🎓 Formulaire Animateur d'Atelier v0.21</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier v0.22</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Le support de présentation et les questions d'évaluation sont obligatoires pour la validation finale de votre atelier.
@@ -636,64 +636,84 @@
             return 'atelier_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); 
         }
 
-        async function loadExistingData(token) {
-            try {
-                debugLog("🔵 Chargement des données pour token: " + token);
-                const response = await fetch(`${SCRIPT_URL}?token=${token}`);
-                const data = await response.json();
-                if (data.error) {
-                    alert(" " + data.error);
-                    debugLog(` Erreur chargement: ${data.error}`, 'error');
-                    return;
-                }
+async function loadExistingData(token) {
+    try {
+        debugLog("🔵 Chargement des données pour token: " + token);
+        const response = await fetch(`${SCRIPT_URL}?token=${token}`);
+        const data = await response.json();
+        if (data.error) {
+            alert("❌ " + data.error);
+            debugLog(`❌ Erreur chargement: ${data.error}`, 'error');
+            return;
+        }
+        
+        // Remplir les champs texte
+        document.getElementById('company').value = data['Société'] || '';
+        document.getElementById('trainerName').value = data['Formateur'] || '';
+        document.getElementById('trainerRole').value = data['Fonction'] || '';
+        document.getElementById('workshopTitle').value = data['Titre Atelier'] || '';
+        document.getElementById('email').value = data['Email'] || '';
+        document.getElementById('description').value = data['Description'] || '';
+        document.getElementById('remarks').value = data['Remarques'] || '';
+        
+        // Accord de diffusion
+        const diffAgreement = data['Accord Diffusion'];
+        if (diffAgreement) {
+            const radio = document.querySelector(`input[name="diffusion"][value="${diffAgreement}"]`);
+            if (radio) radio.checked = true;
+        }
+        
+        // Charger les questions et réponses
+        try {
+            const questions = JSON.parse(data['Questions_JSON'] || '[]');
+            const answers = JSON.parse(data['Answers_JSON'] || '[]');
+            const correctAnswers = JSON.parse(data['CorrectAnswers_JSON'] || '[]');
+            
+            debugLog(`🔵 Questions chargées: ${questions.length}`);
+            debugLog(`🔵 Réponses chargées: ${answers.length}`);
+            
+            for (let i = 0; i < 2; i++) {
+                // Initialiser d'abord les champs de réponses
+                initAnswers(i + 1);
                 
-                document.getElementById('company').value = data['Société'] || '';
-                document.getElementById('trainerName').value = data['Formateur'] || '';
-                document.getElementById('trainerRole').value = data['Fonction'] || '';
-                document.getElementById('workshopTitle').value = data['Titre Atelier'] || '';
-                document.getElementById('email').value = data['Email'] || '';
-                document.getElementById('description').value = data['Description'] || '';
-                document.getElementById('remarks').value = data['Remarques'] || '';
-                
-                const diffAgreement = data['Accord Diffusion'];
-                if (diffAgreement) {
-                    const radio = document.querySelector(`input[name="diffusion"][value="${diffAgreement}"]`);
-                    if (radio) radio.checked = true;
-                }
-                
-                try {
-                    const questions = JSON.parse(data['Questions_JSON'] || '[]');
-                    const answers = JSON.parse(data['Answers_JSON'] || '[]');
-                    const correctAnswers = JSON.parse(data['CorrectAnswers_JSON'] || '[]');
+                if (questions[i]) {
+                    document.getElementById(`q${i+1}`).value = questions[i];
                     
-                    for (let i = 0; i < 2; i++) {
-                        if (questions[i]) {
-                            document.getElementById(`q${i+1}`).value = questions[i];
-                            for (let j = 0; j < 8; j++) {
-                                const ansInput = document.getElementById(`q${i+1}a${j+1}`);
-                                const checkInput = document.getElementById(`q${i+1}a${j+1}_check`);
-                                if (ansInput && answers[i] && answers[i][j]) {
-                                    ansInput.value = answers[i][j];
-                                }
-                                if (checkInput && correctAnswers[i] && correctAnswers[i][j] === 'OUI') {
-                                    checkInput.checked = true;
-                                }
+                    // Remplir les propositions de réponses
+                    if (answers[i]) {
+                        for (let j = 0; j < 8; j++) {
+                            const ansInput = document.getElementById(`q${i+1}a${j+1}`);
+                            const checkInput = document.getElementById(`q${i+1}a${j+1}_check`);
+                            
+                            if (ansInput && answers[i][j]) {
+                                ansInput.value = answers[i][j];
+                                debugLog(`✅ Question ${i+1} Prop ${j+1}: ${answers[i][j]}`);
+                            }
+                            
+                            if (checkInput && correctAnswers[i] && correctAnswers[i][j] === 'OUI') {
+                                checkInput.checked = true;
+                                debugLog(`✅ Question ${i+1} Prop ${j+1} cochée comme bonne réponse`);
                             }
                         }
                     }
-                } catch (e) {
-                    debugLog("Erreur parsing JSON questions: " + e.message, 'error');
                 }
-                
-                const btn = document.getElementById('submitBtn');
-                if (btn) btn.innerText = '✓ Mettre à jour le formulaire';
-                debugLog("✅ Données chargées", 'success');
-                
-            } catch (error) {
-                debugLog(`❌ Erreur chargement: ${error.message}`, 'error');
-                alert("❌ Erreur lors du chargement des données.");
             }
+        } catch (e) {
+            debugLog("❌ Erreur parsing JSON questions: " + e.message, 'error');
+            console.error("Erreur parsing questions:", e);
         }
+        
+        // Changer le texte du bouton
+        const btn = document.getElementById('submitBtn');
+        if (btn) btn.innerText = '✓ Mettre à jour le formulaire';
+        
+        debugLog("✅ Données chargées avec succès", 'success');
+        
+    } catch (error) {
+        debugLog(`❌ Erreur chargement: ${error.message}`, 'error');
+        alert("❌ Erreur lors du chargement des données: " + error.message);
+    }
+}
 
         function resetForm() {
             editToken = '';
