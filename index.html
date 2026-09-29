@@ -153,7 +153,7 @@
     <div class="container">
         <div class="header">
             <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
-            <h1>🎓 Formulaire Animateur d'Atelier v0.28</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier v0.29</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Le support de présentation et les questions d'évaluation sont obligatoires.
@@ -291,102 +291,174 @@
             window.scrollTo(0, 0);
         }
 
-        async function validateAndSubmit() {
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true; submitBtn.innerText = 'Validation en cours...';
+async function validateAndSubmit() {
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true; 
+    submitBtn.innerText = 'Validation en cours...';
 
-            try {
-                const diffusionAgreement = document.querySelector('input[name="diffusion"]:checked');
-                if (!diffusionAgreement) { alert('Veuillez indiquer votre accord de diffusion.'); resetBtn(); return; }
-
-                const logoFile = document.getElementById('logoUpload').files[0];
-                const supportFile = document.getElementById('supportUpload').files[0];
-                
-                // Si mode création (pas d'édition), fichiers obligatoires
-                if (!editToken) {
-                    if (!logoFile) { alert('Veuillez uploader le logo.'); resetBtn(); return; }
-                    if (!supportFile) { alert('Veuillez uploader le support.'); resetBtn(); return; }
-                }
-
-                if (logoFile && logoFile.size > 3 * 1024 * 1024) { alert('Logo trop lourd (max 3 Mo).'); resetBtn(); return; }
-                if (supportFile && supportFile.size > 15 * 1024 * 1024) { alert('Support trop lourd (max 15 Mo).'); resetBtn(); return; }
-
-                const questions = [], answers = [], correctAnswers = [];
-                for (let i = 1; i <= 2; i++) {
-                    const question = document.getElementById(`q${i}`).value.trim();
-                    if (!question) { alert(`Veuillez saisir la question ${i}.`); resetBtn(); return; }
-                    questions.push(question);
-                    const qAnswers = [], qCorrect = [];
-                    let filledCount = 0, checkedFilledCount = 0;
-                    for (let j = 1; j <= 8; j++) {
-                        const answer = document.getElementById(`q${i}a${j}`).value.trim();
-                        const isCorrect = document.getElementById(`q${i}a${j}_check`).checked;
-                        qAnswers.push(answer); qCorrect.push(isCorrect ? 'OUI' : 'NON');
-                        if (answer) { filledCount++; if (isCorrect) checkedFilledCount++; }
-                    }
-                    if (filledCount < 3) { alert(`La question ${i} doit contenir au moins 3 propositions.`); resetBtn(); return; }
-                    if (checkedFilledCount === 0) { alert(`Vous devez cocher au moins une bonne réponse pour la question ${i}.`); resetBtn(); return; }
-                    answers.push(qAnswers); correctAnswers.push(qCorrect);
-                }
-
-                // Affichage overlay d'envoi
-                document.getElementById('step2-section').classList.add('hidden');
-                document.getElementById('uploadOverlay').classList.add('active');
-
-                // 🚀 ENCODAGE PARALLÈLE (2x plus rapide)
-                document.getElementById('upload-status-text').innerText = "Encodage des fichiers...";
-                document.getElementById('progress-bar').style.width = '25%';
-
-                const [logoBase64, supportBase64] = await Promise.all([
-                    logoFile ? fileToBase64(logoFile) : Promise.resolve(null),
-                    supportFile ? fileToBase64(supportFile) : Promise.resolve(null)
-                ]);
-
-                document.getElementById('upload-status-text').innerText = "Fichiers encodés, envoi en cours...";
-                document.getElementById('progress-bar').style.width = '50%';
-
-                const token = editToken || generateToken();
-                const data = {
-                    token, timestamp: new Date().toISOString(), action: editToken ? 'update' : 'create',
-                    company: document.getElementById('company').value.trim(),
-                    trainerName: document.getElementById('trainerName').value.trim(),
-                    trainerRole: document.getElementById('trainerRole').value.trim(),
-                    workshopTitle: document.getElementById('workshopTitle').value.trim(),
-                    email: document.getElementById('email').value.trim(),
-                    description: document.getElementById('description').value.trim(),
-                    remarks: document.getElementById('remarks').value.trim(),
-                    diffusionAgreement: diffusionAgreement.value,
-                    logoFile: logoBase64 ? { name: logoFile.name, type: logoFile.type, base64: logoBase64 } : (existingLogoName ? { name: existingLogoName } : null),
-                    supportFile: supportBase64 ? { name: supportFile.name, type: supportFile.type, base64: supportBase64 } : (existingSupportName ? { name: existingSupportName } : null),
-                    questions, answers, correctAnswers
-                };
-
-                document.getElementById('upload-status-text').innerText = "Enregistrement...";
-                document.getElementById('progress-bar').style.width = '75%';
-                await saveData(data);
-
-                document.getElementById('upload-status-text').innerText = "Finalisation...";
-                document.getElementById('progress-bar').style.width = '100%';
-                
-                setTimeout(() => {
-                    document.getElementById('uploadOverlay').classList.remove('active');
-                    document.getElementById('success-section').classList.remove('hidden');
-                    document.getElementById('success-section').style.display = 'block';
-                    editToken = token;
-                    window.history.replaceState({}, document.title, FORM_BASE_URL + "?token=" + token);
-                }, 500);
-
-            } catch (error) {
-                document.getElementById('uploadOverlay').classList.remove('active');
-                document.getElementById('step2-section').classList.remove('hidden');
-                alert("Une erreur est survenue : " + error.message);
-                resetBtn();
-            }
-            
-            function resetBtn() {
-                submitBtn.disabled = false; submitBtn.innerText = '✓ Valider et envoyer';
-            }
+    try {
+        const diffusionAgreement = document.querySelector('input[name="diffusion"]:checked');
+        if (!diffusionAgreement) { 
+            alert('Veuillez indiquer votre accord de diffusion.'); 
+            resetBtn(); 
+            return; 
         }
+
+        const logoFile = document.getElementById('logoUpload').files[0];
+        const supportFile = document.getElementById('supportUpload').files[0];
+        
+        if (!editToken) {
+            if (!logoFile) { alert('Veuillez uploader le logo.'); resetBtn(); return; }
+            if (!supportFile) { alert('Veuillez uploader le support.'); resetBtn(); return; }
+        }
+
+        if (logoFile && logoFile.size > 3 * 1024 * 1024) { 
+            alert('Logo trop lourd (max 3 Mo).'); 
+            resetBtn(); 
+            return; 
+        }
+        if (supportFile && supportFile.size > 15 * 1024 * 1024) { 
+            alert('Support trop lourd (max 15 Mo).'); 
+            resetBtn(); 
+            return; 
+        }
+
+        const questions = [], answers = [], correctAnswers = [];
+        for (let i = 1; i <= 2; i++) {
+            const question = document.getElementById(`q${i}`).value.trim();
+            if (!question) { 
+                alert(`Veuillez saisir la question ${i}.`); 
+                resetBtn(); 
+                return; 
+            }
+            questions.push(question);
+            const qAnswers = [], qCorrect = [];
+            let filledCount = 0, checkedFilledCount = 0;
+            for (let j = 1; j <= 8; j++) {
+                const answer = document.getElementById(`q${i}a${j}`).value.trim();
+                const isCorrect = document.getElementById(`q${i}a${j}_check`).checked;
+                qAnswers.push(answer); 
+                qCorrect.push(isCorrect ? 'OUI' : 'NON');
+                if (answer) { 
+                    filledCount++; 
+                    if (isCorrect) checkedFilledCount++; 
+                }
+            }
+            if (filledCount < 3) { 
+                alert(`La question ${i} doit contenir au moins 3 propositions.`); 
+                resetBtn(); 
+                return; 
+            }
+            if (checkedFilledCount === 0) { 
+                alert(`Vous devez cocher au moins une bonne réponse pour la question ${i}.`); 
+                resetBtn(); 
+                return; 
+            }
+            answers.push(qAnswers); 
+            correctAnswers.push(qCorrect);
+        }
+
+        // Affichage overlay
+        document.getElementById('step2-section').classList.add('hidden');
+        document.getElementById('uploadOverlay').classList.add('active');
+
+        const token = editToken || generateToken();
+        
+        // 🚀 ENVOI SÉQUENTIEL : D'abord les données texte (rapide)
+        document.getElementById('upload-status-text').innerText = "Enregistrement des données...";
+        document.getElementById('progress-bar').style.width = '25%';
+
+        const textData = {
+            token, 
+            timestamp: new Date().toISOString(), 
+            action: editToken ? 'update' : 'create',
+            company: document.getElementById('company').value.trim(),
+            trainerName: document.getElementById('trainerName').value.trim(),
+            trainerRole: document.getElementById('trainerRole').value.trim(),
+            workshopTitle: document.getElementById('workshopTitle').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            description: document.getElementById('description').value.trim(),
+            remarks: document.getElementById('remarks').value.trim(),
+            diffusionAgreement: diffusionAgreement.value,
+            logoFileName: logoFile ? logoFile.name : (existingLogoName || ''),
+            supportFileName: supportFile ? supportFile.name : (existingSupportName || ''),
+            questions, 
+            answers, 
+            correctAnswers
+        };
+
+        // Envoi des données texte
+        await saveData(textData);
+        console.log("✅ Données texte envoyées");
+
+        document.getElementById('upload-status-text').innerText = "Données enregistrées, envoi des fichiers...";
+        document.getElementById('progress-bar').style.width = '50%';
+
+        // 🚀 ENVOI DES FICHIERS (si présents)
+        if (logoFile) {
+            document.getElementById('upload-status-text').innerText = "Encodage du logo...";
+            document.getElementById('progress-bar').style.width = '60%';
+            const logoBase64 = await fileToBase64(logoFile);
+            
+            document.getElementById('upload-status-text').innerText = "Upload du logo...";
+            document.getElementById('progress-bar').style.width = '70%';
+            await saveFile(logoBase64, logoFile.name, logoFile.type, token, 'logo');
+            console.log("✅ Logo uploadé");
+        }
+
+        if (supportFile) {
+            document.getElementById('upload-status-text').innerText = "Encodage du support...";
+            document.getElementById('progress-bar').style.width = '80%';
+            const supportBase64 = await fileToBase64(supportFile);
+            
+            document.getElementById('upload-status-text').innerText = "Upload du support...";
+            document.getElementById('progress-bar').style.width = '90%';
+            await saveFile(supportBase64, supportFile.name, supportFile.type, token, 'support');
+            console.log("✅ Support uploadé");
+        }
+
+        document.getElementById('upload-status-text').innerText = "Finalisation...";
+        document.getElementById('progress-bar').style.width = '100%';
+        
+        setTimeout(() => {
+            document.getElementById('uploadOverlay').classList.remove('active');
+            document.getElementById('success-section').classList.remove('hidden');
+            document.getElementById('success-section').style.display = 'block';
+            editToken = token;
+            window.history.replaceState({}, document.title, FORM_BASE_URL + "?token=" + token);
+        }, 500);
+
+    } catch (error) {
+        console.error("❌ Erreur:", error);
+        document.getElementById('uploadOverlay').classList.remove('active');
+        document.getElementById('step2-section').classList.remove('hidden');
+        alert("Une erreur est survenue : " + error.message);
+        resetBtn();
+    }
+    
+    function resetBtn() {
+        submitBtn.disabled = false; 
+        submitBtn.innerText = '✓ Valider et envoyer';
+    }
+}
+
+// Nouvelle fonction pour sauvegarder les fichiers séparément
+async function saveFile(base64Data, fileName, fileType, token, fileType_label) {
+    const fileData = {
+        token,
+        fileName,
+        fileType,
+        base64: base64Data,
+        fileType_label
+    };
+    
+    await fetch(SCRIPT_URL, { 
+        method: 'POST', 
+        mode: 'no-cors', 
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'uploadFile', ...fileData })
+    });
+}
 
         // 🚀 ENCODAGE OPTIMISÉ avec ArrayBuffer
         function fileToBase64(file) {
