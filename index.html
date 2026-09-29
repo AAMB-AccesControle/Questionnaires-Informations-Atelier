@@ -146,7 +146,7 @@
     </div>
 
     <!-- Overlay de progression pour l'envoi -->
-    <div id="uploadOverlay" class="hidden">
+    <div id="uploadOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 76, 106, 0.98); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white;">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="upload-status-text">Préparation des fichiers...</div>
         <div class="progress-container">
@@ -160,7 +160,7 @@
             <div class="header-logo-wrapper">
                 <img src="logo-aamb.png" alt="Logo AAMB">
             </div>
-            <h1>🎓 Formulaire Animateur d'Atelier v0.26</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier v0.27</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Le support de présentation et les questions d'évaluation sont obligatoires.
@@ -336,7 +336,7 @@
                 }
 
                 document.getElementById('step2-section').classList.add('hidden');
-                document.getElementById('uploadOverlay').classList.remove('hidden');
+                document.getElementById('uploadOverlay').style.display = 'flex';
 
                 let logoBase64 = null, supportBase64 = null;
                 
@@ -382,15 +382,15 @@
                 document.getElementById('progress-bar').style.width = '100%';
                 
                 setTimeout(() => {
-                    document.getElementById('uploadOverlay').classList.add('hidden');
+                    document.getElementById('uploadOverlay').style.display = 'none';
                     document.getElementById('success-section').classList.remove('hidden');
                     document.getElementById('success-section').style.display = 'block';
                     editToken = token;
                     window.history.replaceState({}, document.title, FORM_BASE_URL + "?token=" + token);
                 }, 500);
-
+            
             } catch (error) {
-                document.getElementById('uploadOverlay').classList.add('hidden');
+                document.getElementById('uploadOverlay').style.display = 'none';
                 document.getElementById('step2-section').classList.remove('hidden');
                 alert("Une erreur est survenue : " + error.message);
                 resetBtn();
