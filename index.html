@@ -147,7 +147,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Loading Overlay */
+        /* Loading Overlay (identique au formulaire Partenaire) */
         #loadingOverlay {
             display: none;
             position: fixed;
@@ -180,10 +180,6 @@
             background: linear-gradient(90deg, #0a4c6a 0%, #4a8b38 100%); 
             transition: width 0.4s ease; 
         }
-        .loading-error {
-            color: #ff6b6b; font-size: 16px; margin-top: 20px;
-            display: none; text-align: center; max-width: 80%;
-        }
 
         @media (max-width: 768px) {
             body { padding: 10px; }
@@ -200,6 +196,7 @@
     </style>
 </head>
 <body>
+    <!-- Overlay de chargement -->
     <div id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="upload-status-text">Préparation des fichiers...</div>
@@ -207,7 +204,6 @@
             <div id="progress-bar" class="progress-bar"></div>
         </div>
         <div class="loading-subtext">Merci de ne pas fermer cette page pendant le transfert.</div>
-        <div class="loading-error" id="loadingError"></div>
     </div>
 
     <div class="container">
@@ -215,7 +211,7 @@
             <div class="header-logo-wrapper">
                 <img src="logo-aamb.png" alt="Logo AAMB">
             </div>
-            <h1>🎓 Formulaire Animateur d'Atelier v0.18</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier v0.19</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Le support de présentation et les questions d'évaluation sont obligatoires pour la validation finale de votre atelier.
@@ -223,8 +219,10 @@
         </div>
 
         <div class="content">
+            <div id="message-container"></div>
+
             <!-- ÉTAPE 1 : Informations Générales -->
-            <div id="step1-section">
+            <div id="step1-section" class="section-block">
                 <div class="sub-section">
                     <div class="sub-section-title">📋 Informations Générales</div>
                     <div class="form-group">
@@ -327,21 +325,20 @@
 
     <script>
         // ⚠️ REMPLACEZ CETTE URL PAR CELLE DE VOTRE DÉPLOIEMENT APPS SCRIPT
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcG4qCooMOY4XCOt8Y8aFkqUuGems3wZNmbDhvne9y8GxPjbYN8cI4wwJdXlBxGa8l/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZU8zI-7pXUEHeWJr37A7hYyGSa7NO6tXVbOMtaOqeyixh4et4KA59-b1IC2a0BvM-IA/exec';
         // URL de base du formulaire pour le lien de modification dans l'email
         const FORM_BASE_URL = window.location.origin + window.location.pathname;
 
         let editToken = '';
-        let isEditMode = false;
 
         window.onload = function() {
+            console.log("🔵 [onload] Initialisation du formulaire...");
             const urlParams = new URLSearchParams(window.location.search);
             editToken = urlParams.get('token');
 
             if (editToken) {
-                isEditMode = true;
+                console.log("🔵 [onload] Mode édition détecté, chargement des données...");
                 loadExistingData(editToken);
-                showLoading(true, "Chargement de votre formulaire...");
             } else {
                 for (let i = 1; i <= 2; i++) initAnswers(i);
             }
@@ -359,6 +356,7 @@
         }
 
         function showStep2() {
+            console.log("🔵 [showStep2] Validation de l'étape 1...");
             const fields = ['company', 'trainerName', 'trainerRole', 'workshopTitle', 'email', 'description', 'remarks'];
             for (const id of fields) {
                 const el = document.getElementById(id);
@@ -386,23 +384,10 @@
             window.scrollTo(0, 0);
         }
 
-        function showLoading(show, text = "Préparation des fichiers...") {
-            const overlay = document.getElementById('loadingOverlay');
-            if (show) {
-                document.getElementById('upload-status-text').innerText = text;
-                document.getElementById('progress-bar').style.width = '0%';
-                overlay.classList.add('active');
-            } else {
-                overlay.classList.remove('active');
-            }
-        }
-
-        function updateProgress(percent, statusText) {
-            document.getElementById('progress-bar').style.width = percent + '%';
-            document.getElementById('upload-status-text').innerText = statusText;
-        }
-
         async function validateAndSubmit() {
+            console.log("🔵 [validateAndSubmit] Démarrage de la procédure d'envoi...");
+            const submitBtn = document.querySelector('#step2-section .btn-primary');
+            
             const diffusionAgreement = document.querySelector('input[name="diffusion"]:checked');
             if (!diffusionAgreement) {
                 alert('Veuillez indiquer votre accord de diffusion pour le support de formation.');
@@ -415,8 +400,8 @@
             if (!logoFile) { alert('Veuillez uploader le logo de l\'entreprise.'); return; }
             if (!supportFile) { alert('Veuillez uploader le support de présentation.'); return; }
 
-            const MAX_LOGO_SIZE = 3 * 1024 * 1024;
-            const MAX_SUPPORT_SIZE = 15 * 1024 * 1024;
+            const MAX_LOGO_SIZE = 3 * 1024 * 1024; // 3 Mo
+            const MAX_SUPPORT_SIZE = 15 * 1024 * 1024; // 15 Mo
 
             if (logoFile.size > MAX_LOGO_SIZE) {
                 alert(`⚠️ Le fichier du logo est trop lourd (${(logoFile.size / (1024 * 1024)).toFixed(1)} Mo).\nTaille max : 3 Mo.`);
@@ -460,19 +445,26 @@
                 correctAnswers.push(qCorrect);
             }
 
-            showLoading(true);
+            console.log("🔵 [validateAndSubmit] Validation passée, affichage du chargement...");
+            document.getElementById('step2-section').classList.add('hidden');
+            document.getElementById('loadingOverlay').classList.add('active');
 
             try {
-                updateProgress(25, "Encodage des fichiers...");
+                console.log("🔵 [validateAndSubmit] Encodage du logo...");
+                document.getElementById('upload-status-text').innerText = "Encodage du logo...";
+                document.getElementById('progress-bar').style.width = '25%';
                 const logoBase64 = await fileToBase64(logoFile);
                 
-                updateProgress(50, "Encodage du support de présentation...");
+                console.log("🔵 [validateAndSubmit] Encodage du support...");
+                document.getElementById('upload-status-text').innerText = "Encodage du support de présentation...";
+                document.getElementById('progress-bar').style.width = '50%';
                 const supportBase64 = await fileToBase64(supportFile);
 
+                const token = editToken || generateToken();
                 const data = {
-                    token: editToken || generateToken(),
+                    token: token,
                     timestamp: new Date().toISOString(),
-                    action: isEditMode ? 'update' : 'create',
+                    action: editToken ? 'update' : 'create',
                     company: document.getElementById('company').value.trim(),
                     trainerName: document.getElementById('trainerName').value.trim(),
                     trainerRole: document.getElementById('trainerRole').value.trim(),
@@ -486,22 +478,30 @@
                     questions, answers, correctAnswers
                 };
 
-                updateProgress(75, "Enregistrement dans Google Drive & Sheet...");
+                console.log("🔵 [validateAndSubmit] Envoi vers Google Apps Script...", SCRIPT_URL);
+                document.getElementById('upload-status-text').innerText = "Enregistrement dans Google Drive & Sheet...";
+                document.getElementById('progress-bar').style.width = '75%';
+                
                 await saveData(data);
 
-                updateProgress(100, "Finalisation...");
+                console.log("🔵 [validateAndSubmit] Envoi réussi !");
+                document.getElementById('upload-status-text').innerText = "Finalisation...";
+                document.getElementById('progress-bar').style.width = '100%';
+                
                 setTimeout(() => {
-                    showLoading(false);
-                    document.getElementById('step2-section').classList.add('hidden');
+                    document.getElementById('loadingOverlay').classList.remove('active');
                     document.getElementById('success-section').classList.remove('hidden');
-                    editToken = data.token;
-                    window.history.replaceState({}, document.title, FORM_BASE_URL + "?token=" + editToken);
+                    document.getElementById('success-section').style.display = 'block';
+                    editToken = token;
+                    window.history.replaceState({}, document.title, FORM_BASE_URL + "?token=" + token);
                 }, 500);
 
             } catch (error) {
-                showLoading(false);
+                console.error("❌ [validateAndSubmit] Erreur:", error);
+                document.getElementById('loadingOverlay').classList.remove('active');
                 document.getElementById('step2-section').classList.remove('hidden');
-                alert("❌ Erreur lors de l'envoi : " + error.message);
+                document.getElementById('message-container').innerHTML = `<div style="background: #f8d7da; color: #721c24; border-left: 5px solid #dc3545; padding: 20px; border-radius: 8px; margin-bottom: 20px;"><h3>❌ Erreur lors de l'envoi</h3><p>${error.message}</p><p style="font-size:12px; margin-top:10px;">Vérifiez la console (F12) pour plus de détails.</p></div>`;
+                alert("Une erreur est survenue : " + error.message);
             }
         }
 
@@ -533,9 +533,7 @@
                 const response = await fetch(`${SCRIPT_URL}?token=${token}`);
                 const data = await response.json();
                 if (data.error) {
-                    document.getElementById('loadingError').innerText = "❌ " + data.error;
-                    document.getElementById('loadingError').style.display = 'block';
-                    setTimeout(() => showLoading(false), 3000);
+                    alert("❌ " + data.error);
                     return;
                 }
                 
@@ -580,24 +578,21 @@
                 const btn = document.querySelector('#step2-section .btn-primary');
                 if (btn) btn.innerText = '✓ Mettre à jour le formulaire';
                 
-                setTimeout(() => showLoading(false), 500);
-                
             } catch (error) {
                 console.error("Erreur chargement:", error);
-                document.getElementById('loadingError').innerText = "❌ Erreur lors du chargement des données.";
-                document.getElementById('loadingError').style.display = 'block';
-                setTimeout(() => showLoading(false), 3000);
+                alert("❌ Erreur lors du chargement des données.");
             }
         }
 
         function resetForm() {
-            editToken = ''; isEditMode = false;
+            editToken = '';
             const inputs = document.querySelectorAll('input[type="text"], input[type="email"], textarea, input[type="file"]');
             inputs.forEach(input => input.value = '');
             const radios = document.querySelectorAll('input[type="radio"]');
             radios.forEach(radio => radio.checked = false);
             for (let i = 1; i <= 2; i++) { document.getElementById(`q${i}`).value = ''; initAnswers(i); }
             document.getElementById('success-section').classList.add('hidden');
+            document.getElementById('success-section').style.display = 'none';
             document.getElementById('step1-section').classList.remove('hidden');
             window.history.replaceState({}, document.title, FORM_BASE_URL);
             window.scrollTo(0, 0);
