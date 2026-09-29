@@ -36,137 +36,75 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             margin-bottom: 15px;
         }
-        .header-logo-wrapper img {
-            max-width: 140px;
-            height: auto;
-            display: block;
-        }
+        .header-logo-wrapper img { max-width: 140px; height: auto; display: block; }
         .header h1 { font-size: 28px; margin-bottom: 8px; }
         .header-subtitle {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-top: 15px;
-            line-height: 1.5;
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 8px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: 14px; opacity: 0.9; margin-top: 15px; line-height: 1.5;
+            background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;
+            max-width: 800px; margin-left: auto; margin-right: auto;
         }
         .content { padding: 40px; }
-        
         .sub-section { 
-            background: #f8f9fa; 
-            border-radius: 8px; 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            border-left: 4px solid #0a4c6a; 
+            background: #f8f9fa; border-radius: 8px; padding: 20px; 
+            margin-bottom: 20px; border-left: 4px solid #0a4c6a; 
         }
-        .sub-section-title { 
-            color: #0a4c6a; 
-            font-size: 16px; 
-            font-weight: 600; 
-            margin-bottom: 15px; 
-        }
-        
+        .sub-section-title { color: #0a4c6a; font-size: 16px; font-weight: 600; margin-bottom: 15px; }
         .form-group { margin-bottom: 20px; }
         label { display: block; color: #333; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
         .required::after { content: " *"; color: #e74c3c; }
-        
         input[type="text"], input[type="email"], textarea, input[type="file"] { 
-            width: 100%; 
-            padding: 12px 15px; 
-            border: 2px solid #ddd; 
-            border-radius: 8px; 
-            font-size: 14px; 
-            transition: border-color 0.3s; 
-            font-family: inherit; 
+            width: 100%; padding: 12px 15px; border: 2px solid #ddd; border-radius: 8px; 
+            font-size: 14px; transition: border-color 0.3s; font-family: inherit; 
         }
         input[type="file"] { padding: 10px; border-style: dashed; background: #f8f9fa; }
         input:focus, textarea:focus { outline: none; border-color: #0a4c6a; }
-        
         .info-box { 
-            background: #fff3cd; 
-            border-left: 4px solid #ffc107; 
-            padding: 15px; 
-            margin-bottom: 20px; 
-            border-radius: 4px; 
-            color: #856404; 
-            line-height: 1.5; 
-            font-size: 14px;
+            background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; 
+            margin-bottom: 20px; border-radius: 4px; color: #856404; line-height: 1.5; font-size: 14px;
         }
         .info-box a { color: #856404; font-weight: bold; }
-        
         .radio-group { display: flex; gap: 15px; margin-top: 8px; flex-wrap: wrap; }
         .radio-item { 
-            display: flex; align-items: center; gap: 8px; 
-            background: white; padding: 10px 15px; border-radius: 6px; 
-            border: 2px solid #e9ecef; cursor: pointer; transition: all 0.3s; 
-            font-weight: normal; font-size: 14px;
+            display: flex; align-items: center; gap: 8px; background: white; padding: 10px 15px; 
+            border-radius: 6px; border: 2px solid #e9ecef; cursor: pointer; transition: all 0.3s; font-size: 14px;
         }
         .radio-item:hover { border-color: #0a4c6a; background: #eef2f7; }
         .radio-item input { width: 18px; height: 18px; cursor: pointer; accent-color: #0a4c6a; }
-
         .question-input { margin-bottom: 20px; resize: vertical; min-height: 80px; }
         .answers-container { display: grid; gap: 12px; }
         .answer-item { 
-            display: flex; align-items: center; gap: 12px; 
-            background: white; padding: 10px 15px; border-radius: 6px; 
-            border: 2px solid #e9ecef; transition: all 0.3s;
+            display: flex; align-items: center; gap: 12px; background: white; padding: 10px 15px; 
+            border-radius: 6px; border: 2px solid #e9ecef; transition: all 0.3s;
         }
         .answer-item:hover { border-color: #0a4c6a; }
         .answer-item input[type="text"] { flex: 1; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; margin: 0; }
         .answer-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: #0a4c6a; }
-
         .buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 15px; }
         .btn { 
-            padding: 14px 30px; border: none; border-radius: 8px; 
-            font-size: 16px; font-weight: 600; cursor: pointer; 
-            transition: all 0.3s; flex: 1; text-align: center;
+            padding: 14px 30px; border: none; border-radius: 8px; font-size: 16px; 
+            font-weight: 600; cursor: pointer; transition: all 0.3s; flex: 1; text-align: center;
         }
-        .btn-primary { 
-            background: linear-gradient(135deg, #0a4c6a 0%, #2e5b70 100%); 
-            color: white; 
-        }
+        .btn-primary { background: linear-gradient(135deg, #0a4c6a 0%, #2e5b70 100%); color: white; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(10, 76, 106, 0.4); }
         .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .btn-secondary { background: #6c757d; color: white; }
         .btn-secondary:hover { background: #5a6268; }
-
         .hidden { display: none !important; }
-        
-        .success-message { 
-            text-align: center; padding: 60px 40px; 
-            animation: fadeIn 0.5s;
-        }
+        .success-message { text-align: center; padding: 60px 40px; animation: fadeIn 0.5s; }
         .success-icon { font-size: 80px; color: #28a745; margin-bottom: 20px; }
         .success-message h2 { color: #0a4c6a; margin-bottom: 15px; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         #loadingOverlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 76, 106, 0.98);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            color: white;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 76, 106, 0.98); z-index: 9999;
+            justify-content: center; align-items: center; flex-direction: column; color: white;
         }
         #loadingOverlay.active { display: flex; animation: fadeIn 0.3s; }
         .loading-spinner {
-            width: 60px; height: 60px;
-            border: 5px solid rgba(255,255,255,0.3);
-            border-top: 5px solid #4a8b38;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 25px;
+            width: 60px; height: 60px; border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid #4a8b38; border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 25px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loading-text { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
@@ -176,27 +114,39 @@
             border-radius: 10px; overflow: hidden; height: 12px; margin-bottom: 10px; 
         }
         .progress-bar { 
-            width: 0%; height: 100%; 
-            background: linear-gradient(90deg, #0a4c6a 0%, #4a8b38 100%); 
+            width: 0%; height: 100%; background: linear-gradient(90deg, #0a4c6a 0%, #4a8b38 100%); 
             transition: width 0.4s ease; 
         }
-
+        .file-info {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 6px;
+            padding: 10px 15px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #2e7d32;
+        }
+        .file-info strong { color: #1b5e20; }
         @media (max-width: 768px) {
-            body { padding: 10px; }
-            .container { border-radius: 10px; }
-            .header { padding: 20px 15px; }
-            .header h1 { font-size: 22px; }
-            .content { padding: 20px 15px; }
-            .sub-section { padding: 15px; }
+            body { padding: 10px; } .container { border-radius: 10px; }
+            .header { padding: 20px 15px; } .header h1 { font-size: 22px; }
+            .content { padding: 20px 15px; } .sub-section { padding: 15px; }
             .answer-item { flex-wrap: wrap; }
             .answer-item input[type="text"] { width: 100%; margin-top: 5px; }
-            .buttons { flex-direction: column; }
-            .radio-group { flex-direction: column; gap: 10px; }
+            .buttons { flex-direction: column; } .radio-group { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
 <body>
+    <!-- Overlay de chargement -->
     <div id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">Chargement de votre formulaire...</div>
+        <div class="loading-subtext">Veuillez patienter quelques instants</div>
+    </div>
+
+    <!-- Overlay de progression pour l'envoi -->
+    <div id="uploadOverlay" class="hidden">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="upload-status-text">Préparation des fichiers...</div>
         <div class="progress-container">
@@ -210,67 +160,43 @@
             <div class="header-logo-wrapper">
                 <img src="logo-aamb.png" alt="Logo AAMB">
             </div>
-            <h1>🎓 Formulaire Animateur d'Atelier v0.25</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier v0.26</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
-                <strong>Important :</strong> Le support de présentation et les questions d'évaluation sont obligatoires pour la validation finale de votre atelier.
+                <strong>Important :</strong> Le support de présentation et les questions d'évaluation sont obligatoires.
             </div>
         </div>
 
         <div class="content">
             <div id="message-container"></div>
 
+            <!-- ÉTAPE 1 -->
             <div id="step1-section">
                 <div class="sub-section">
                     <div class="sub-section-title">📋 Informations Générales</div>
-                    <div class="form-group">
-                        <label class="required">Société</label>
-                        <input type="text" id="company" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="required">Nom et prénom du formateur</label>
-                        <input type="text" id="trainerName" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="required">Fonction du formateur au sein de l'entreprise</label>
-                        <input type="text" id="trainerRole" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="required">Titre de l'atelier</label>
-                        <input type="text" id="workshopTitle" required>
-                    </div>
+                    <div class="form-group"><label class="required">Société</label><input type="text" id="company" required></div>
+                    <div class="form-group"><label class="required">Nom et prénom du formateur</label><input type="text" id="trainerName" required></div>
+                    <div class="form-group"><label class="required">Fonction du formateur</label><input type="text" id="trainerRole" required></div>
+                    <div class="form-group"><label class="required">Titre de l'atelier</label><input type="text" id="workshopTitle" required></div>
                     <div class="form-group">
                         <label class="required">Logo de l'entreprise</label>
-                        <input type="file" id="logoUpload" accept="image/*" required>
-                        <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Format accepté : JPG, PNG, SVG. <strong>Taille max : 3 Mo</strong></small>
+                        <input type="file" id="logoUpload" accept="image/*">
+                        <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Format : JPG, PNG, SVG. <strong>Taille max : 3 Mo</strong></small>
+                        <div id="logoFileInfo" class="file-info hidden"></div>
                     </div>
-                    <div class="form-group">
-                        <label class="required">Adresse e-mail</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="required">Description de l'atelier (environ 100 mots)</label>
-                        <textarea id="description" rows="4" placeholder="Décrivez le contenu, les objectifs et le déroulé..." required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="required">Remarques ou informations complémentaires</label>
-                        <textarea id="remarks" rows="3" placeholder="Besoins spécifiques, matériel particulier..." required></textarea>
-                    </div>
+                    <div class="form-group"><label class="required">Adresse e-mail</label><input type="email" id="email" required></div>
+                    <div class="form-group"><label class="required">Description de l'atelier</label><textarea id="description" rows="4" placeholder="Décrivez le contenu, les objectifs..." required></textarea></div>
+                    <div class="form-group"><label class="required">Remarques ou informations complémentaires</label><textarea id="remarks" rows="3" placeholder="Besoins spécifiques..." required></textarea></div>
                 </div>
-                <div class="buttons">
-                    <button class="btn btn-primary" onclick="showStep2()">Continuer vers le Support et l'Évaluation →</button>
-                </div>
+                <div class="buttons"><button class="btn btn-primary" onclick="showStep2()">Continuer vers le Support et l'Évaluation →</button></div>
             </div>
             
+            <!-- ÉTAPE 2 -->
             <div id="step2-section" class="hidden">
                 <div class="sub-section">
-                    <div class="sub-section-title">📁 Support de l'Atelier</div>
-                    <div class="info-box">
-                        📌 <strong>Validation du support :</strong> Nous devons consulter votre support avant les journées.<br><br>
-                        À défaut, envoyez-le avant le <strong>15 octobre 2026</strong> à <a href="mailto:jtb.partenaire@aamb.asso.fr">jtb.partenaire@aamb.asso.fr</a>.
-                    </div>
+                    <div class="sub-section-title"> Support de l'Atelier</div>
                     <div class="form-group">
-                        <label class="required">Accord de diffusion : Accepteriez-vous que votre support soit mis à disposition sur le site de l'AAMB en accès libre ?</label>
+                        <label class="required">Accord de diffusion</label>
                         <div class="radio-group">
                             <label class="radio-item"><input type="radio" name="diffusion" value="OUI" required> Oui, j'accepte</label>
                             <label class="radio-item"><input type="radio" name="diffusion" value="NON" required> Non, je n'accepte pas</label>
@@ -278,8 +204,9 @@
                     </div>
                     <div class="form-group">
                         <label class="required">Support de présentation</label>
-                        <input type="file" id="supportUpload" accept=".pdf,.ppt,.pptx,.doc,.docx" required>
-                        <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Formats acceptés : PDF, PowerPoint, Word. <strong>Taille max : 15 Mo</strong></small>
+                        <input type="file" id="supportUpload" accept=".pdf,.ppt,.pptx,.doc,.docx">
+                        <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Formats : PDF, PowerPoint, Word. <strong>Taille max : 15 Mo</strong></small>
+                        <div id="supportFileInfo" class="file-info hidden"></div>
                     </div>
                 </div>
 
@@ -287,15 +214,13 @@
                     <div class="sub-section-title">🧠 Évaluation des Connaissances</div>
                     <div class="info-box">
                         <strong> Comment remplir :</strong> Cochez les cases pour indiquer les bonnes réponses.<br>
-                        <strong>⚠️ Règles obligatoires :</strong> Chaque question doit contenir <u>au moins 3 propositions</u> et <u>au moins 1 bonne réponse cochée</u>.
+                        <strong>⚠️ Règles :</strong> Au moins 3 propositions et au moins 1 bonne réponse cochée par question.
                     </div>
-
                     <div style="margin-bottom: 25px;">
                         <label class="required">Question 1</label>
                         <textarea class="question-input" id="q1" rows="2" placeholder="Saisissez votre question..."></textarea>
                         <div class="answers-container" id="answers1"></div>
                     </div>
-
                     <div>
                         <label class="required">Question 2</label>
                         <textarea class="question-input" id="q2" rows="2" placeholder="Saisissez votre question..."></textarea>
@@ -304,15 +229,16 @@
                 </div>
 
                 <div class="buttons">
-                    <button class="btn btn-secondary" onclick="showStep1()">← Retour aux informations générales</button>
+                    <button class="btn btn-secondary" onclick="showStep1()">← Retour</button>
                     <button class="btn btn-primary" id="submitBtn" onclick="validateAndSubmit()">✓ Valider et envoyer</button>
                 </div>
             </div>
 
+            <!-- ÉTAPE 3 : Succès -->
             <div id="success-section" class="hidden success-message">
                 <div class="success-icon">✓</div>
                 <h2>Merci pour votre participation !</h2>
-                <p>Les informations de votre atelier ainsi que vos fichiers ont été enregistrés avec succès.</p>
+                <p>Les informations de votre atelier ont été enregistrées avec succès.</p>
                 <p style="margin-top: 10px; color: #666; font-size: 14px;">Un e-mail de récapitulatif vous a été envoyé.</p>
                 <button class="btn btn-primary" onclick="resetForm()" style="margin-top: 30px; max-width: 300px;">Remplir un nouveau formulaire</button>
             </div>
@@ -324,11 +250,12 @@
         const FORM_BASE_URL = 'https://aamb-accescontrole.github.io/Questionnaires-Informations-Atelier/';
 
         let editToken = '';
+        let existingLogoName = '';
+        let existingSupportName = '';
 
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             editToken = urlParams.get('token');
-
             if (editToken) {
                 loadExistingData(editToken);
             } else {
@@ -342,7 +269,7 @@
             for (let i = 1; i <= 8; i++) {
                 const div = document.createElement('div');
                 div.className = 'answer-item';
-                div.innerHTML = `<input type="checkbox" id="q${questionNum}a${i}_check" title="Cochez si c'est une bonne réponse"><input type="text" id="q${questionNum}a${i}" placeholder="Proposition ${i}">`;
+                div.innerHTML = `<input type="checkbox" id="q${questionNum}a${i}_check" title="Bonne réponse"><input type="text" id="q${questionNum}a${i}" placeholder="Proposition ${i}">`;
                 container.appendChild(div);
             }
         }
@@ -352,17 +279,12 @@
             for (const id of fields) {
                 const el = document.getElementById(id);
                 if (!el.value.trim()) {
-                    alert('Veuillez remplir tous les champs obligatoires des informations générales.');
-                    el.focus();
-                    el.style.borderColor = '#e74c3c';
-                    return;
-                } else {
-                    el.style.borderColor = '#ddd';
-                }
+                    alert('Veuillez remplir tous les champs obligatoires.');
+                    el.focus(); el.style.borderColor = '#e74c3c'; return;
+                } else { el.style.borderColor = '#ddd'; }
             }
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim())) {
-                alert('Adresse e-mail invalide.');
-                return;
+                alert('Adresse e-mail invalide.'); return;
             }
             document.getElementById('step1-section').classList.add('hidden');
             document.getElementById('step2-section').classList.remove('hidden');
@@ -377,108 +299,68 @@
 
         async function validateAndSubmit() {
             const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Validation en cours...';
+            submitBtn.disabled = true; submitBtn.innerText = 'Validation en cours...';
 
             try {
                 const diffusionAgreement = document.querySelector('input[name="diffusion"]:checked');
-                if (!diffusionAgreement) {
-                    alert('Veuillez indiquer votre accord de diffusion pour le support de formation.');
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = '✓ Valider et envoyer';
-                    return;
-                }
+                if (!diffusionAgreement) { alert('Veuillez indiquer votre accord de diffusion.'); resetBtn(); return; }
 
                 const logoFile = document.getElementById('logoUpload').files[0];
                 const supportFile = document.getElementById('supportUpload').files[0];
                 
-                if (!logoFile) { 
-                    alert('Veuillez uploader le logo de l\'entreprise.'); 
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = '✓ Valider et envoyer';
-                    return; 
-                }
-                if (!supportFile) { 
-                    alert('Veuillez uploader le support de présentation.'); 
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = '✓ Valider et envoyer';
-                    return; 
+                // Si mode édition et aucun nouveau fichier, on garde les anciens
+                if (!editToken) {
+                    if (!logoFile) { alert('Veuillez uploader le logo.'); resetBtn(); return; }
+                    if (!supportFile) { alert('Veuillez uploader le support.'); resetBtn(); return; }
                 }
 
-                const MAX_LOGO_SIZE = 3 * 1024 * 1024;
-                const MAX_SUPPORT_SIZE = 15 * 1024 * 1024;
-
-                if (logoFile.size > MAX_LOGO_SIZE) {
-                    alert(`⚠️ Le fichier du logo est trop lourd (${(logoFile.size / (1024 * 1024)).toFixed(1)} Mo).\nTaille max : 3 Mo.`);
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = '✓ Valider et envoyer';
-                    return;
-                }
-                if (supportFile.size > MAX_SUPPORT_SIZE) {
-                    alert(`⚠️ Votre support de présentation est trop volumineux (${(supportFile.size / (1024 * 1024)).toFixed(1)} Mo).\nTaille max : 15 Mo.`);
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = '✓ Valider et envoyer';
-                    return;
-                }
+                if (logoFile && logoFile.size > 3 * 1024 * 1024) { alert('Logo trop lourd (max 3 Mo).'); resetBtn(); return; }
+                if (supportFile && supportFile.size > 15 * 1024 * 1024) { alert('Support trop lourd (max 15 Mo).'); resetBtn(); return; }
 
                 const questions = [], answers = [], correctAnswers = [];
                 for (let i = 1; i <= 2; i++) {
                     const question = document.getElementById(`q${i}`).value.trim();
-                    if (!question) { 
-                        alert(`Veuillez saisir la question ${i}.`); 
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = '✓ Valider et envoyer';
-                        return; 
-                    }
+                    if (!question) { alert(`Veuillez saisir la question ${i}.`); resetBtn(); return; }
                     questions.push(question);
-
                     const qAnswers = [], qCorrect = [];
                     let filledCount = 0, checkedFilledCount = 0;
-
                     for (let j = 1; j <= 8; j++) {
                         const answer = document.getElementById(`q${i}a${j}`).value.trim();
                         const isCorrect = document.getElementById(`q${i}a${j}_check`).checked;
-                        qAnswers.push(answer);
-                        qCorrect.push(isCorrect ? 'OUI' : 'NON');
-                        if (answer) {
-                            filledCount++;
-                            if (isCorrect) checkedFilledCount++;
-                        }
+                        qAnswers.push(answer); qCorrect.push(isCorrect ? 'OUI' : 'NON');
+                        if (answer) { filledCount++; if (isCorrect) checkedFilledCount++; }
                     }
-
-                    if (filledCount < 3) {
-                        alert(`⚠️ La question ${i} doit contenir au moins 3 propositions.`);
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = '✓ Valider et envoyer';
-                        return;
-                    }
-                    if (checkedFilledCount === 0) {
-                        alert(`⚠️ Vous devez cocher au moins une bonne réponse pour la question ${i}.`);
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = '✓ Valider et envoyer';
-                        return;
-                    }
-
-                    answers.push(qAnswers);
-                    correctAnswers.push(qCorrect);
+                    if (filledCount < 3) { alert(`La question ${i} doit contenir au moins 3 propositions.`); resetBtn(); return; }
+                    if (checkedFilledCount === 0) { alert(`Vous devez cocher au moins une bonne réponse pour la question ${i}.`); resetBtn(); return; }
+                    answers.push(qAnswers); correctAnswers.push(qCorrect);
                 }
 
                 document.getElementById('step2-section').classList.add('hidden');
-                document.getElementById('loadingOverlay').classList.add('active');
+                document.getElementById('uploadOverlay').classList.remove('hidden');
 
-                document.getElementById('upload-status-text').innerText = "Encodage du logo...";
-                document.getElementById('progress-bar').style.width = '25%';
-                const logoBase64 = await fileToBase64(logoFile);
+                let logoBase64 = null, supportBase64 = null;
                 
-                document.getElementById('upload-status-text').innerText = "Encodage du support de présentation...";
-                document.getElementById('progress-bar').style.width = '50%';
-                const supportBase64 = await fileToBase64(supportFile);
+                if (logoFile) {
+                    document.getElementById('upload-status-text').innerText = "Encodage du logo...";
+                    document.getElementById('progress-bar').style.width = '25%';
+                    logoBase64 = await fileToBase64(logoFile);
+                } else if (existingLogoName) {
+                    document.getElementById('upload-status-text').innerText = "Utilisation du logo existant...";
+                    document.getElementById('progress-bar').style.width = '25%';
+                }
+                
+                if (supportFile) {
+                    document.getElementById('upload-status-text').innerText = "Encodage du support...";
+                    document.getElementById('progress-bar').style.width = '50%';
+                    supportBase64 = await fileToBase64(supportFile);
+                } else if (existingSupportName) {
+                    document.getElementById('upload-status-text').innerText = "Utilisation du support existant...";
+                    document.getElementById('progress-bar').style.width = '50%';
+                }
 
                 const token = editToken || generateToken();
                 const data = {
-                    token: token,
-                    timestamp: new Date().toISOString(),
-                    action: editToken ? 'update' : 'create',
+                    token, timestamp: new Date().toISOString(), action: editToken ? 'update' : 'create',
                     company: document.getElementById('company').value.trim(),
                     trainerName: document.getElementById('trainerName').value.trim(),
                     trainerRole: document.getElementById('trainerRole').value.trim(),
@@ -487,21 +369,20 @@
                     description: document.getElementById('description').value.trim(),
                     remarks: document.getElementById('remarks').value.trim(),
                     diffusionAgreement: diffusionAgreement.value,
-                    logoFile: { name: logoFile.name, type: logoFile.type, base64: logoBase64 },
-                    supportFile: { name: supportFile.name, type: supportFile.type, base64: supportBase64 },
+                    logoFile: logoBase64 ? { name: logoFile.name, type: logoFile.type, base64: logoBase64 } : (existingLogoName ? { name: existingLogoName } : null),
+                    supportFile: supportBase64 ? { name: supportFile.name, type: supportFile.type, base64: supportBase64 } : (existingSupportName ? { name: existingSupportName } : null),
                     questions, answers, correctAnswers
                 };
 
-                document.getElementById('upload-status-text').innerText = "Enregistrement dans Google Drive & Sheet...";
+                document.getElementById('upload-status-text').innerText = "Enregistrement...";
                 document.getElementById('progress-bar').style.width = '75%';
-                
                 await saveData(data);
 
                 document.getElementById('upload-status-text').innerText = "Finalisation...";
                 document.getElementById('progress-bar').style.width = '100%';
                 
                 setTimeout(() => {
-                    document.getElementById('loadingOverlay').classList.remove('active');
+                    document.getElementById('uploadOverlay').classList.add('hidden');
                     document.getElementById('success-section').classList.remove('hidden');
                     document.getElementById('success-section').style.display = 'block';
                     editToken = token;
@@ -509,11 +390,14 @@
                 }, 500);
 
             } catch (error) {
-                document.getElementById('loadingOverlay').classList.remove('active');
+                document.getElementById('uploadOverlay').classList.add('hidden');
                 document.getElementById('step2-section').classList.remove('hidden');
                 alert("Une erreur est survenue : " + error.message);
-                submitBtn.disabled = false;
-                submitBtn.innerText = '✓ Valider et envoyer';
+                resetBtn();
+            }
+            
+            function resetBtn() {
+                submitBtn.disabled = false; submitBtn.innerText = '✓ Valider et envoyer';
             }
         }
 
@@ -527,27 +411,21 @@
         }
 
         async function saveData(data) {
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify(data)
-            });
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(data) });
             return true;
         }
 
-        function generateToken() { 
-            return 'atelier_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); 
-        }
+        function generateToken() { return 'atelier_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); }
 
         async function loadExistingData(token) {
+            // Afficher l'overlay de chargement
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.add('active');
+            
             try {
                 const response = await fetch(`${SCRIPT_URL}?token=${token}`);
                 const data = await response.json();
-                if (data.error) {
-                    alert("❌ " + data.error);
-                    return;
-                }
+                if (data.error) { alert("❌ " + data.error); overlay.classList.remove('active'); return; }
                 
                 document.getElementById('company').value = data['Société'] || '';
                 document.getElementById('trainerName').value = data['Formateur'] || '';
@@ -563,6 +441,22 @@
                     if (radio) radio.checked = true;
                 }
                 
+                // Afficher les noms des fichiers existants
+                existingLogoName = data['Nom Logo'] || '';
+                existingSupportName = data['Nom Support'] || '';
+                
+                if (existingLogoName) {
+                    const logoInfo = document.getElementById('logoFileInfo');
+                    logoInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> ${existingLogoName}<br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
+                    logoInfo.classList.remove('hidden');
+                }
+                
+                if (existingSupportName) {
+                    const supportInfo = document.getElementById('supportFileInfo');
+                    supportInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> ${existingSupportName}<br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
+                    supportInfo.classList.remove('hidden');
+                }
+                
                 try {
                     const questions = JSON.parse(data['Questions_JSON'] || '[]');
                     const answers = JSON.parse(data['Answers_JSON'] || '[]');
@@ -576,44 +470,45 @@
                                 for (let j = 0; j < 8; j++) {
                                     const ansInput = document.getElementById(`q${i+1}a${j+1}`);
                                     const checkInput = document.getElementById(`q${i+1}a${j+1}_check`);
-                                    if (ansInput && answers[i][j]) {
-                                        ansInput.value = answers[i][j];
-                                    }
-                                    if (checkInput && correctAnswers[i] && correctAnswers[i][j] === 'OUI') {
-                                        checkInput.checked = true;
-                                    }
+                                    if (ansInput && answers[i][j]) ansInput.value = answers[i][j];
+                                    if (checkInput && correctAnswers[i] && correctAnswers[i][j] === 'OUI') checkInput.checked = true;
                                 }
                             }
                         }
                     }
-                } catch (e) {
-                    console.log("Erreur parsing JSON questions", e);
-                }
+                } catch (e) { console.log("Erreur parsing JSON questions", e); }
                 
                 const btn = document.getElementById('submitBtn');
                 if (btn) btn.innerText = '✓ Mettre à jour le formulaire';
                 
+                // Masquer l'overlay après un court délai
+                setTimeout(() => {
+                    overlay.classList.remove('active');
+                    // Afficher directement l'étape 2 si on est en mode édition
+                    document.getElementById('step1-section').classList.add('hidden');
+                    document.getElementById('step2-section').classList.remove('hidden');
+                }, 500);
+                
             } catch (error) {
                 alert("❌ Erreur lors du chargement des données.");
+                document.getElementById('loadingOverlay').classList.remove('active');
             }
         }
 
         function resetForm() {
             editToken = '';
-            const inputs = document.querySelectorAll('input[type="text"], input[type="email"], textarea, input[type="file"]');
-            inputs.forEach(input => input.value = '');
-            const radios = document.querySelectorAll('input[type="radio"]');
-            radios.forEach(radio => radio.checked = false);
+            existingLogoName = '';
+            existingSupportName = '';
+            document.querySelectorAll('input[type="text"], input[type="email"], textarea, input[type="file"]').forEach(input => input.value = '');
+            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+            document.getElementById('logoFileInfo').classList.add('hidden');
+            document.getElementById('supportFileInfo').classList.add('hidden');
             for (let i = 1; i <= 2; i++) { document.getElementById(`q${i}`).value = ''; initAnswers(i); }
             document.getElementById('success-section').classList.add('hidden');
             document.getElementById('success-section').style.display = 'none';
             document.getElementById('step1-section').classList.remove('hidden');
             window.history.replaceState({}, document.title, FORM_BASE_URL);
             window.scrollTo(0, 0);
-        }
-
-        if ('serviceWorker' in navigator) { 
-            navigator.serviceWorker.register('sw.js').catch(err => console.error('❌ SW error:', err)); 
         }
     </script>
 </body>
