@@ -487,90 +487,89 @@ async function saveFile(base64Data, fileName, fileType, token, fileType_label) {
 
         function generateToken() { return 'atelier_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); }
 
-        async function loadExistingData(token) {
-            const overlay = document.getElementById('loadingOverlay');
-            overlay.classList.add('active');
+async function loadExistingData(token) {
+    const overlay = document.getElementById('loadingOverlay');
+    overlay.classList.add('active');
+    
+    try {
+        const response = await fetch(`${SCRIPT_URL}?token=${token}`);
+        const data = await response.json();
+        if (data.error) { 
+            alert("❌ " + data.error); 
+            overlay.classList.remove('active'); 
+            return; 
+        }
+        
+        // Remplir les champs texte
+        document.getElementById('company').value = data['Société'] || '';
+        document.getElementById('trainerName').value = data['Formateur'] || '';
+        document.getElementById('trainerRole').value = data['Fonction'] || '';
+        document.getElementById('workshopTitle').value = data['Titre Atelier'] || '';
+        document.getElementById('email').value = data['Email'] || '';
+        document.getElementById('description').value = data['Description'] || '';
+        document.getElementById('remarks').value = data['Remarques'] || '';
+        
+        // Accord de diffusion
+        const diffAgreement = data['Accord Diffusion'];
+        if (diffAgreement) {
+            const radio = document.querySelector(`input[name="diffusion"][value="${diffAgreement}"]`);
+            if (radio) radio.checked = true;
+        }
+        
+        // Afficher les fichiers existants
+        existingLogoName = data['URL Logo'] || data['Nom Logo'] || '';
+        existingSupportName = data['URL Support'] || data['Nom Support'] || '';
+        
+        if (existingLogoName) {
+            const logoInfo = document.getElementById('logoFileInfo');
+            logoInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> <a href="${existingLogoName}" target="_blank" style="color:#1b5e20;text-decoration:underline;">📎 Voir le fichier dans Drive</a><br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
+            logoInfo.classList.remove('hidden');
+        }
+        
+        if (existingSupportName) {
+            const supportInfo = document.getElementById('supportFileInfo');
+            supportInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> <a href="${existingSupportName}" target="_blank" style="color:#1b5e20;text-decoration:underline;">📎 Voir le fichier dans Drive</a><br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
+            supportInfo.classList.remove('hidden');
+        }
+        
+        // Charger les questions et réponses depuis les colonnes individuelles
+        try {
+            const questions = JSON.parse(data['Questions_JSON'] || '[]');
+            const answers = JSON.parse(data['Answers_JSON'] || '[]');
+            const correctAnswers = JSON.parse(data['CorrectAnswers_JSON'] || '[]');
             
-            try {
-                const response = await fetch(`${SCRIPT_URL}?token=${token}`);
-                const data = await response.json();
-                if (data.error) { alert("❌ " + data.error); overlay.classList.remove('active'); return; }
-                
-                document.getElementById('company').value = data['Société'] || '';
-                document.getElementById('trainerName').value = data['Formateur'] || '';
-                document.getElementById('trainerRole').value = data['Fonction'] || '';
-                document.getElementById('workshopTitle').value = data['Titre Atelier'] || '';
-                document.getElementById('email').value = data['Email'] || '';
-                document.getElementById('description').value = data['Description'] || '';
-                document.getElementById('remarks').value = data['Remarques'] || '';
-                
-                const diffAgreement = data['Accord Diffusion'];
-                if (diffAgreement) {
-                    const radio = document.querySelector(`input[name="diffusion"][value="${diffAgreement}"]`);
-                    if (radio) radio.checked = true;
-                }
-                
-                existingLogoName = data['Nom Logo'] || '';
-                existingSupportName = data['Nom Support'] || '';
-                
-                // Fonction pour extraire le nom du fichier depuis l'URL Google Drive
-                function getFileNameFromUrl(url) {
-                    if (!url) return 'Aucun fichier';
-                    // L'URL Google Drive ressemble à : https://drive.google.com/file/d/FILE_ID/view
-                    const match = url.match(/\/d\/([^/]+)\//);
-                    if (match) {
-                        return `<a href="${url}" target="_blank" style="color:#1b5e20;text-decoration:underline;">📎 Voir le fichier dans Drive</a>`;
-                    }
-                    return url;
-                }
-                
-                if (existingLogoName) {
-                    const logoInfo = document.getElementById('logoFileInfo');
-                    logoInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> ${getFileNameFromUrl(existingLogoName)}<br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
-                    logoInfo.classList.remove('hidden');
-                }
-                
-                if (existingSupportName) {
-                    const supportInfo = document.getElementById('supportFileInfo');
-                    supportInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> ${getFileNameFromUrl(existingSupportName)}<br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
-                    supportInfo.classList.remove('hidden');
-                }
-                
-                try {
-                    const questions = JSON.parse(data['Questions_JSON'] || '[]');
-                    const answers = JSON.parse(data['Answers_JSON'] || '[]');
-                    const correctAnswers = JSON.parse(data['CorrectAnswers_JSON'] || '[]');
-                    
-                    for (let i = 0; i < 2; i++) {
-                        initAnswers(i + 1);
-                        if (questions[i]) {
-                            document.getElementById(`q${i+1}`).value = questions[i];
-                            if (answers[i]) {
-                                for (let j = 0; j < 8; j++) {
-                                    const ansInput = document.getElementById(`q${i+1}a${j+1}`);
-                                    const checkInput = document.getElementById(`q${i+1}a${j+1}_check`);
-                                    if (ansInput && answers[i][j]) ansInput.value = answers[i][j];
-                                    if (checkInput && correctAnswers[i] && correctAnswers[i][j] === 'OUI') checkInput.checked = true;
-                                }
-                            }
+            for (let i = 0; i < 2; i++) {
+                initAnswers(i + 1);
+                if (questions[i]) {
+                    document.getElementById(`q${i+1}`).value = questions[i];
+                    if (answers[i]) {
+                        for (let j = 0; j < 8; j++) {
+                            const ansInput = document.getElementById(`q${i+1}a${j+1}`);
+                            const checkInput = document.getElementById(`q${i+1}a${j+1}_check`);
+                            if (ansInput && answers[i][j]) ansInput.value = answers[i][j];
+                            if (checkInput && correctAnswers[i] && correctAnswers[i][j] === 'OUI') checkInput.checked = true;
                         }
                     }
-                } catch (e) { console.log("Erreur parsing JSON questions", e); }
-                
-                const btn = document.getElementById('submitBtn');
-                if (btn) btn.innerText = '✓ Mettre à jour le formulaire';
-                
-                setTimeout(() => {
-                    overlay.classList.remove('active');
-                    document.getElementById('step1-section').classList.add('hidden');
-                    document.getElementById('step2-section').classList.remove('hidden');
-                }, 500);
-                
-            } catch (error) {
-                alert("❌ Erreur lors du chargement des données.");
-                document.getElementById('loadingOverlay').classList.remove('active');
+                }
             }
+        } catch (e) { 
+            console.log("Erreur parsing JSON questions", e); 
         }
+        
+        const btn = document.getElementById('submitBtn');
+        if (btn) btn.innerText = '✓ Mettre à jour le formulaire';
+        
+        setTimeout(() => {
+            overlay.classList.remove('active');
+            document.getElementById('step1-section').classList.add('hidden');
+            document.getElementById('step2-section').classList.remove('hidden');
+        }, 500);
+        
+    } catch (error) {
+        alert("❌ Erreur lors du chargement des données.");
+        document.getElementById('loadingOverlay').classList.remove('active');
+    }
+}
 
         function resetForm() {
             editToken = ''; existingLogoName = ''; existingSupportName = '';
