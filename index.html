@@ -153,7 +153,7 @@
     <div class="container">
         <div class="header">
             <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
-            <h1>🎓 Formulaire Animateur d'Atelier v0.30</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier v0.31</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Le support de présentation et les questions d'évaluation sont obligatoires.
@@ -520,15 +520,26 @@ async function saveFile(base64Data, fileName, fileType, token, fileType_label) {
                 existingLogoName = data['Nom Logo'] || '';
                 existingSupportName = data['Nom Support'] || '';
                 
+                // Fonction pour extraire le nom du fichier depuis l'URL Google Drive
+                function getFileNameFromUrl(url) {
+                    if (!url) return 'Aucun fichier';
+                    // L'URL Google Drive ressemble à : https://drive.google.com/file/d/FILE_ID/view
+                    const match = url.match(/\/d\/([^/]+)\//);
+                    if (match) {
+                        return `<a href="${url}" target="_blank" style="color:#1b5e20;text-decoration:underline;">📎 Voir le fichier dans Drive</a>`;
+                    }
+                    return url;
+                }
+                
                 if (existingLogoName) {
                     const logoInfo = document.getElementById('logoFileInfo');
-                    logoInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> ${existingLogoName}<br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
+                    logoInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> ${getFileNameFromUrl(existingLogoName)}<br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
                     logoInfo.classList.remove('hidden');
                 }
                 
                 if (existingSupportName) {
                     const supportInfo = document.getElementById('supportFileInfo');
-                    supportInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> ${existingSupportName}<br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
+                    supportInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> ${getFileNameFromUrl(existingSupportName)}<br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
                     supportInfo.classList.remove('hidden');
                 }
                 
