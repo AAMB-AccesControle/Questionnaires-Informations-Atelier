@@ -153,7 +153,7 @@
     <div class="container">
         <div class="header">
             <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
-            <h1>🎓 Formulaire Animateur d'Atelier v0.29</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier v0.30</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Le support de présentation et les questions d'évaluation sont obligatoires.
@@ -174,6 +174,10 @@
                     <div class="form-group">
                         <label class="required">Logo de l'entreprise</label>
                         <input type="file" id="logoUpload" accept="image/*">
+                        <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">
+                            Format : JPG, PNG, SVG. <strong>Taille max : 3 Mo</strong> 
+                            <em style="color:#e74c3c;">(Temporairement non obligatoire pour test)</em>
+                        </small>
                         <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Format : JPG, PNG, SVG. <strong>Taille max : 3 Mo</strong></small>
                         <div id="logoFileInfo" class="file-info hidden"></div>
                     </div>
@@ -198,6 +202,10 @@
                     <div class="form-group">
                         <label class="required">Support de présentation</label>
                         <input type="file" id="supportUpload" accept=".pdf,.ppt,.pptx,.doc,.docx">
+                        <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">
+                            Formats : PDF, PowerPoint, Word. <strong>Taille max : 15 Mo</strong>
+                            <em style="color:#e74c3c;">(Temporairement non obligatoire pour test)</em>
+                        </small>
                         <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Formats : PDF, PowerPoint, Word. <strong>Taille max : 15 Mo</strong></small>
                         <div id="supportFileInfo" class="file-info hidden"></div>
                     </div>
@@ -307,10 +315,11 @@ async function validateAndSubmit() {
         const logoFile = document.getElementById('logoUpload').files[0];
         const supportFile = document.getElementById('supportUpload').files[0];
         
-        if (!editToken) {
-            if (!logoFile) { alert('Veuillez uploader le logo.'); resetBtn(); return; }
-            if (!supportFile) { alert('Veuillez uploader le support.'); resetBtn(); return; }
-        }
+        // ⚠️ TEMPORAIRE : Fichiers non obligatoires pour test
+        // if (!editToken) {
+        //     if (!logoFile) { alert('Veuillez uploader le logo.'); resetBtn(); return; }
+        //     if (!supportFile) { alert('Veuillez uploader le support.'); resetBtn(); return; }
+        // }
 
         if (logoFile && logoFile.size > 3 * 1024 * 1024) { 
             alert('Logo trop lourd (max 3 Mo).'); 
