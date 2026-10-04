@@ -147,7 +147,7 @@
     <div class="container">
         <div class="header">
             <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
-            <h1>🎓 Formulaire Animateur d'Atelier v.0.50</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier v0.51</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Les questions d'évaluation sont obligatoires. Le support de présentation est facultatif mais fortement recommandé.
@@ -171,7 +171,7 @@
                         <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Format : JPG, PNG, SVG. <strong>Taille max : 3 Mo</strong></small>
                         <div id="logoFileInfo" class="file-info hidden">
                             <span id="logoFileInfoText"></span>
-                            <button type="button" class="btn-remove-file" onclick="removeExistingFile('logo')">✕ Supprimer</button>
+                            <button type="button" class="btn-remove-file" onclick="removeExistingFile('logo')"> Supprimer</button>
                         </div>
                     </div>
                     <div class="form-group"><label class="required">Adresse e-mail</label><input type="email" id="email" required></div>
@@ -207,10 +207,10 @@
                 </div>
 
                 <div class="sub-section">
-                    <div class="sub-section-title">🧠 Évaluation des Connaissances</div>
+                    <div class="sub-section-title"> Évaluation des Connaissances</div>
                     <div class="info-box">
                         <strong>📝 Comment remplir :</strong> Cochez les cases pour indiquer les bonnes réponses.<br>
-                        <strong>️ Règles :</strong> Au moins 3 propositions et au moins 1 bonne réponse cochée par question.
+                        <strong>⚠️ Règles :</strong> Au moins 3 propositions et au moins 1 bonne réponse cochée par question.
                     </div>
                     <div style="margin-bottom: 25px;">
                         <label class="required">Question 1</label>
@@ -241,7 +241,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyTPEjkd_LyKdc8fLbC0zp56LdtEWxYyEqN4fNfK_2H1nVpYOsD2TyTXZYrJ_1VRn7GcA/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDAkgrvDWUo4PUyig3xIs5csKt3-APqwRRzvUqooWBDa81RpK4W5c5FIa5G1SwoqRpFg/exec';
         const FORM_BASE_URL = 'https://aamb-accescontrole.github.io/Questionnaires-Informations-Atelier/';
 
         let editToken = '';
@@ -251,6 +251,32 @@
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             editToken = urlParams.get('token');
+            
+            // ✅ Event listeners pour afficher le bouton supprimer après upload
+            document.getElementById('logoUpload').addEventListener('change', function() {
+                if (this.files[0]) {
+                    document.getElementById('logoFileInfoText').innerHTML = `<strong>✅ Fichier sélectionné :</strong> ${this.files[0].name}`;
+                    document.getElementById('logoFileInfo').classList.remove('hidden');
+                    existingLogoName = this.files[0].name;
+                } else {
+                    if (!existingLogoName) {
+                        document.getElementById('logoFileInfo').classList.add('hidden');
+                    }
+                }
+            });
+            
+            document.getElementById('supportUpload').addEventListener('change', function() {
+                if (this.files[0]) {
+                    document.getElementById('supportFileInfoText').innerHTML = `<strong>✅ Fichier sélectionné :</strong> ${this.files[0].name}`;
+                    document.getElementById('supportFileInfo').classList.remove('hidden');
+                    existingSupportName = this.files[0].name;
+                } else {
+                    if (!existingSupportName) {
+                        document.getElementById('supportFileInfo').classList.add('hidden');
+                    }
+                }
+            });
+            
             if (editToken) {
                 loadExistingData(editToken);
             } else {
@@ -460,17 +486,22 @@
                     if (radio) radio.checked = true;
                 }
                 
-                existingLogoName = data['URL Logo'] || data['Nom Logo'] || '';
-                existingSupportName = data['URL Support'] || data['Nom Support'] || '';
+                // ✅ Utiliser les colonnes "Nom Logo" et "Nom Support" au lieu des URLs
+                existingLogoName = data['Nom Logo'] || '';
+                existingSupportName = data['Nom Support'] || '';
                 
-                if (existingLogoName) {
+                if (existingLogoName && existingLogoName !== 'Supprimé') {
                     document.getElementById('logoFileInfoText').innerHTML = `<strong>✅ Fichier actuel :</strong> ${existingLogoName}`;
                     document.getElementById('logoFileInfo').classList.remove('hidden');
+                } else if (existingLogoName === 'Supprimé') {
+                    existingLogoName = '';
                 }
                 
-                if (existingSupportName) {
+                if (existingSupportName && existingSupportName !== 'Supprimé') {
                     document.getElementById('supportFileInfoText').innerHTML = `<strong>✅ Fichier actuel :</strong> ${existingSupportName}`;
                     document.getElementById('supportFileInfo').classList.remove('hidden');
+                } else if (existingSupportName === 'Supprimé') {
+                    existingSupportName = '';
                 }
                 
                 try {
