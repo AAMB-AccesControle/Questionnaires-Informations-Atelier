@@ -110,8 +110,14 @@
         .file-info {
             background: #e8f5e9; border: 2px solid #4caf50; border-radius: 6px;
             padding: 10px 15px; margin-top: 8px; font-size: 13px; color: #2e7d32;
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
         }
         .file-info strong { color: #1b5e20; }
+        .btn-remove-file {
+            background: #e74c3c; color: white; border: none; border-radius: 4px;
+            padding: 4px 10px; cursor: pointer; font-size: 12px; font-weight: 600;
+        }
+        .btn-remove-file:hover { background: #c0392b; }
         @media (max-width: 768px) {
             body { padding: 10px; } .container { border-radius: 10px; }
             .header { padding: 20px 15px; } .header h1 { font-size: 22px; }
@@ -125,7 +131,7 @@
 <body>
     <div id="loadingOverlay">
         <div class="loading-spinner"></div>
-        <div class="loading-text" id="loadingText">Chargement de votre formulaire...</div>
+        <div class="loading-text">Chargement de votre formulaire...</div>
         <div class="loading-subtext">Veuillez patienter quelques instants</div>
     </div>
 
@@ -141,7 +147,7 @@
     <div class="container">
         <div class="header">
             <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
-            <h1>🎓 Formulaire Animateur d'Atelier0.49</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier v.0.50</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Les questions d'évaluation sont obligatoires. Le support de présentation est facultatif mais fortement recommandé.
@@ -154,7 +160,7 @@
             <!-- ÉTAPE 1 -->
             <div id="step1-section">
                 <div class="sub-section">
-                    <div class="sub-section-title">📋 Informations Générales</div>
+                    <div class="sub-section-title"> Informations Générales</div>
                     <div class="form-group"><label class="required">Société</label><input type="text" id="company" required></div>
                     <div class="form-group"><label class="required">Nom et prénom du formateur</label><input type="text" id="trainerName" required></div>
                     <div class="form-group"><label class="required">Fonction du formateur</label><input type="text" id="trainerRole" required></div>
@@ -165,13 +171,11 @@
                         <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Format : JPG, PNG, SVG. <strong>Taille max : 3 Mo</strong></small>
                         <div id="logoFileInfo" class="file-info hidden">
                             <span id="logoFileInfoText"></span>
-                            <button type="button" id="removeLogoBtn" onclick="removeExistingFile('logo')" style="margin-left:10px;background:#e74c3c;color:white;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:12px;">✕ Supprimer</button>
+                            <button type="button" class="btn-remove-file" onclick="removeExistingFile('logo')">✕ Supprimer</button>
                         </div>
                     </div>
                     <div class="form-group"><label class="required">Adresse e-mail</label><input type="email" id="email" required></div>
                     <div class="form-group"><label class="required">Description de l'atelier</label><textarea id="description" rows="4" placeholder="Décrivez le contenu, les objectifs..." required></textarea></div>
-                    
-                    <!-- ✅ MODIFICATION 1 : Retrait de la classe "required" et de l'attribut required -->
                     <div class="form-group">
                         <label>Remarques ou informations complémentaires</label>
                         <textarea id="remarks" rows="3" placeholder="Besoins spécifiques, matériel particulier..."></textarea>
@@ -191,15 +195,13 @@
                             <label class="radio-item"><input type="radio" name="diffusion" value="NON" required> Non, je n'accepte pas</label>
                         </div>
                     </div>
-                    
-                    <!-- ✅ MODIFICATION 2 : Retrait de la classe "required" et de l'attribut required -->
                     <div class="form-group">
                         <label>Support de présentation</label>
                         <input type="file" id="supportUpload" accept=".pdf,.ppt,.pptx,.doc,.docx">
                         <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Formats : PDF, PowerPoint, Word. <strong>Taille max : 15 Mo</strong> (Facultatif)</small>
                         <div id="supportFileInfo" class="file-info hidden">
                             <span id="supportFileInfoText"></span>
-                            <button type="button" id="removeSupportBtn" onclick="removeExistingFile('support')" style="margin-left:10px;background:#e74c3c;color:white;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:12px;">✕ Supprimer</button>
+                            <button type="button" class="btn-remove-file" onclick="removeExistingFile('support')">✕ Supprimer</button>
                         </div>
                     </div>
                 </div>
@@ -208,7 +210,7 @@
                     <div class="sub-section-title">🧠 Évaluation des Connaissances</div>
                     <div class="info-box">
                         <strong>📝 Comment remplir :</strong> Cochez les cases pour indiquer les bonnes réponses.<br>
-                        <strong>⚠️ Règles :</strong> Au moins 3 propositions et au moins 1 bonne réponse cochée par question.
+                        <strong>️ Règles :</strong> Au moins 3 propositions et au moins 1 bonne réponse cochée par question.
                     </div>
                     <div style="margin-bottom: 25px;">
                         <label class="required">Question 1</label>
@@ -234,7 +236,6 @@
                 <h2>Merci pour votre participation !</h2>
                 <p>Les informations de votre atelier ont été enregistrées avec succès.</p>
                 <p style="margin-top: 10px; color: #666; font-size: 14px;">Un e-mail de récapitulatif vous a été envoyé.</p>
-                <!-- ✅ MODIFICATION 3 : Bouton "Remplir un nouveau formulaire" SUPPRIMÉ -->
             </div>
         </div>
     </div>
@@ -268,75 +269,53 @@
             }
         }
 
-
-
-        
         function showStep2() {
-            alert("🔵 ÉTAPE 1 : Fonction showStep2() appelée");
-            
-            try {
-                const fields = ['company', 'trainerName', 'trainerRole', 'workshopTitle', 'email', 'description'];
-                alert("🔵 ÉTAPE 2 : Vérification des champs : " + fields.join(', '));
-                
-                for (const id of fields) {
-                    const el = document.getElementById(id);
-                    if (!el) {
-                        alert("❌ ERREUR : L'élément avec l'ID '" + id + "' n'existe pas dans le HTML !");
-                        return;
-                    }
-                    if (!el.value.trim()) {
-                        alert('⚠️ Veuillez remplir le champ : ' + id);
-                        el.focus();
-                        el.style.borderColor = '#e74c3c';
-                        return;
-                    } else {
-                        el.style.borderColor = '#ddd';
-                    }
-                }
-                alert("✅ ÉTAPE 3 : Tous les champs texte sont OK");
-                
-                const emailVal = document.getElementById('email').value.trim();
-                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-                    alert('⚠️ Adresse e-mail invalide.');
-                    return;
-                }
-                alert("✅ ÉTAPE 4 : Email valide");
-                
-                const logoFile = document.getElementById('logoUpload').files[0];
-                alert("🔵 ÉTAPE 5 : Logo sélectionné = " + (logoFile ? logoFile.name : 'AUCUN') + " | existingLogoName = " + (existingLogoName || 'VIDE'));
-                
-                if (!logoFile && !existingLogoName) {
-                    alert('⚠️ Veuillez uploader le logo de l\'entreprise (format JPG, PNG, SVG - max 3 Mo).');
-                    document.getElementById('logoUpload').style.borderColor = '#e74c3c';
-                    return;
-                }
-                
-                if (logoFile && logoFile.size > 3 * 1024 * 1024) {
-                    alert('⚠️ Le fichier du logo est trop lourd (' + (logoFile.size / (1024 * 1024)).toFixed(1) + ' Mo). Taille max : 3 Mo.');
-                    document.getElementById('logoUpload').style.borderColor = '#e74c3c';
-                    return;
-                }
-                alert("✅ ÉTAPE 6 : Logo OK");
-                
-                alert("🔵 ÉTAPE 7 : Passage à l'étape 2...");
-                document.getElementById('step1-section').classList.add('hidden');
-                document.getElementById('step2-section').classList.remove('hidden');
-                window.scrollTo(0, 0);
-                alert("✅ SUCCÈS : Vous êtes maintenant à l'étape 2 !");
-                
-            } catch (error) {
-                alert("❌ ERREUR CRITIQUE dans showStep2() : " + error.message + "\n\n" + error.stack);
+            const fields = ['company', 'trainerName', 'trainerRole', 'workshopTitle', 'email', 'description'];
+            for (const id of fields) {
+                const el = document.getElementById(id);
+                if (!el.value.trim()) {
+                    alert('Veuillez remplir tous les champs obligatoires.');
+                    el.focus(); el.style.borderColor = '#e74c3c'; return;
+                } else { el.style.borderColor = '#ddd'; }
             }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim())) {
+                alert('Adresse e-mail invalide.'); return;
+            }
+            
+            const logoFile = document.getElementById('logoUpload').files[0];
+            if (!logoFile && !existingLogoName) {
+                alert('⚠️ Veuillez uploader le logo de l\'entreprise (format JPG, PNG, SVG - max 3 Mo).');
+                document.getElementById('logoUpload').style.borderColor = '#e74c3c';
+                return;
+            }
+            if (logoFile && logoFile.size > 3 * 1024 * 1024) {
+                alert('⚠️ Le fichier du logo est trop lourd (' + (logoFile.size / (1024 * 1024)).toFixed(1) + ' Mo). Taille max : 3 Mo.');
+                document.getElementById('logoUpload').style.borderColor = '#e74c3c';
+                return;
+            }
+            document.getElementById('logoUpload').style.borderColor = '#ddd';
+            
+            document.getElementById('step1-section').classList.add('hidden');
+            document.getElementById('step2-section').classList.remove('hidden');
+            window.scrollTo(0, 0);
         }
 
-
-
-
-        
         function showStep1() {
             document.getElementById('step2-section').classList.add('hidden');
             document.getElementById('step1-section').classList.remove('hidden');
             window.scrollTo(0, 0);
+        }
+
+        function removeExistingFile(type) {
+            if (type === 'logo') {
+                existingLogoName = '';
+                document.getElementById('logoFileInfo').classList.add('hidden');
+                document.getElementById('logoUpload').value = '';
+            } else if (type === 'support') {
+                existingSupportName = '';
+                document.getElementById('supportFileInfo').classList.add('hidden');
+                document.getElementById('supportUpload').value = '';
+            }
         }
 
         async function validateAndSubmit() {
@@ -350,7 +329,6 @@
                 const logoFile = document.getElementById('logoUpload').files[0];
                 const supportFile = document.getElementById('supportUpload').files[0];
                 
-                // ✅ MODIFICATION 5 : En mode création, seul le logo est obligatoire
                 if (!editToken) {
                     if (!logoFile) { alert('Veuillez uploader le logo.'); resetBtn(); return; }
                 }
@@ -494,7 +472,6 @@
                     document.getElementById('supportFileInfoText').innerHTML = `<strong>✅ Fichier actuel :</strong> ${existingSupportName}`;
                     document.getElementById('supportFileInfo').classList.remove('hidden');
                 }
-                }
                 
                 try {
                     const questions = JSON.parse(data['Questions_JSON'] || '[]');
@@ -532,30 +509,8 @@
             }
         }
 
-        function removeExistingFile(type) {
-            if (type === 'logo') {
-                existingLogoName = '';
-                document.getElementById('logoFileInfo').classList.add('hidden');
-                document.getElementById('logoUpload').value = '';
-            } else if (type === 'support') {
-                existingSupportName = '';
-                document.getElementById('supportFileInfo').classList.add('hidden');
-                document.getElementById('supportUpload').value = '';
-            }
-        }
-        
-        function resetForm() {
-            editToken = ''; existingLogoName = ''; existingSupportName = '';
-            document.querySelectorAll('input[type="text"], input[type="email"], textarea, input[type="file"]').forEach(input => input.value = '');
-            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
-            document.getElementById('logoFileInfo').classList.add('hidden');
-            document.getElementById('supportFileInfo').classList.add('hidden');
-            for (let i = 1; i <= 2; i++) { document.getElementById(`q${i}`).value = ''; initAnswers(i); }
-            document.getElementById('success-section').classList.add('hidden');
-            document.getElementById('success-section').style.display = 'none';
-            document.getElementById('step1-section').classList.remove('hidden');
-            window.history.replaceState({}, document.title, FORM_BASE_URL);
-            window.scrollTo(0, 0);
+        if ('serviceWorker' in navigator) { 
+            navigator.serviceWorker.register('sw.js').catch(err => console.error(' SW error:', err)); 
         }
     </script>
 </body>
