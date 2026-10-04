@@ -141,7 +141,7 @@
     <div class="container">
         <div class="header">
             <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
-            <h1>🎓 Formulaire Animateur d'Atelier0.46</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier0.47</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Les questions d'évaluation sont obligatoires. Le support de présentation est facultatif mais fortement recommandé.
@@ -163,7 +163,10 @@
                         <label class="required">Logo de l'entreprise</label>
                         <input type="file" id="logoUpload" accept="image/*">
                         <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Format : JPG, PNG, SVG. <strong>Taille max : 3 Mo</strong></small>
-                        <div id="logoFileInfo" class="file-info hidden"></div>
+                        <div id="logoFileInfo" class="file-info hidden">
+                            <span id="logoFileInfoText"></span>
+                            <button type="button" id="removeLogoBtn" onclick="removeExistingFile('logo')" style="margin-left:10px;background:#e74c3c;color:white;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:12px;">✕ Supprimer</button>
+                        </div>
                     </div>
                     <div class="form-group"><label class="required">Adresse e-mail</label><input type="email" id="email" required></div>
                     <div class="form-group"><label class="required">Description de l'atelier</label><textarea id="description" rows="4" placeholder="Décrivez le contenu, les objectifs..." required></textarea></div>
@@ -194,7 +197,10 @@
                         <label>Support de présentation</label>
                         <input type="file" id="supportUpload" accept=".pdf,.ppt,.pptx,.doc,.docx">
                         <small style="color: #666; display: block; margin-top: 5px; font-size: 12px;">Formats : PDF, PowerPoint, Word. <strong>Taille max : 15 Mo</strong> (Facultatif)</small>
-                        <div id="supportFileInfo" class="file-info hidden"></div>
+                        <div id="supportFileInfo" class="file-info hidden">
+                            <span id="supportFileInfoText"></span>
+                            <button type="button" id="removeSupportBtn" onclick="removeExistingFile('support')" style="margin-left:10px;background:#e74c3c;color:white;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:12px;">✕ Supprimer</button>
+                        </div>
                     </div>
                 </div>
 
@@ -234,7 +240,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxDQxJs8Ojf-fj-9QQ5RsEUEhmirxmbVgZj8nWSBlZkn3Qj4do9zr_J_AV-c_O4b_Ystg/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyTPEjkd_LyKdc8fLbC0zp56LdtEWxYyEqN4fNfK_2H1nVpYOsD2TyTXZYrJ_1VRn7GcA/exec';
         const FORM_BASE_URL = 'https://aamb-accescontrole.github.io/Questionnaires-Informations-Atelier/';
 
         let editToken = '';
@@ -361,8 +367,8 @@
                     description: document.getElementById('description').value.trim(),
                     remarks: document.getElementById('remarks').value.trim(),
                     diffusionAgreement: diffusionAgreement.value,
-                    logoFile: logoBase64 ? { name: logoFile.name, type: logoFile.type, base64: logoBase64 } : (existingLogoName ? { name: existingLogoName } : null),
-                    supportFile: supportBase64 ? { name: supportFile.name, type: supportFile.type, base64: supportBase64 } : (existingSupportName ? { name: existingSupportName } : null),
+                    logoFile: logoBase64 ? { name: logoFile.name, type: logoFile.type, base64: logoBase64 } : (existingLogoName ? { name: existingLogoName, toDelete: false } : { name: '', toDelete: true }),
+                    supportFile: supportBase64 ? { name: supportFile.name, type: supportFile.type, base64: supportBase64 } : (existingSupportName ? { name: existingSupportName, toDelete: false } : { name: '', toDelete: true }),
                     questions, answers, correctAnswers
                 };
 
@@ -445,15 +451,14 @@
                 existingSupportName = data['URL Support'] || data['Nom Support'] || '';
                 
                 if (existingLogoName) {
-                    const logoInfo = document.getElementById('logoFileInfo');
-                    logoInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> <a href="${existingLogoName}" target="_blank" style="color:#1b5e20;text-decoration:underline;">📎 Voir le fichier dans Drive</a><br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
-                    logoInfo.classList.remove('hidden');
+                    document.getElementById('logoFileInfoText').innerHTML = `<strong>✅ Fichier actuel :</strong> ${existingLogoName}`;
+                    document.getElementById('logoFileInfo').classList.remove('hidden');
                 }
                 
                 if (existingSupportName) {
-                    const supportInfo = document.getElementById('supportFileInfo');
-                    supportInfo.innerHTML = `<strong>✅ Fichier actuel :</strong> <a href="${existingSupportName}" target="_blank" style="color:#1b5e20;text-decoration:underline;">📎 Voir le fichier dans Drive</a><br><small>Laissez le champ vide pour conserver ce fichier, ou sélectionnez un nouveau fichier pour le remplacer.</small>`;
-                    supportInfo.classList.remove('hidden');
+                    document.getElementById('supportFileInfoText').innerHTML = `<strong>✅ Fichier actuel :</strong> ${existingSupportName}`;
+                    document.getElementById('supportFileInfo').classList.remove('hidden');
+                }
                 }
                 
                 try {
@@ -492,6 +497,18 @@
             }
         }
 
+        function removeExistingFile(type) {
+            if (type === 'logo') {
+                existingLogoName = '';
+                document.getElementById('logoFileInfo').classList.add('hidden');
+                document.getElementById('logoUpload').value = '';
+            } else if (type === 'support') {
+                existingSupportName = '';
+                document.getElementById('supportFileInfo').classList.add('hidden');
+                document.getElementById('supportUpload').value = '';
+            }
+        }
+        
         function resetForm() {
             editToken = ''; existingLogoName = ''; existingSupportName = '';
             document.querySelectorAll('input[type="text"], input[type="email"], textarea, input[type="file"]').forEach(input => input.value = '');
