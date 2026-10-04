@@ -141,7 +141,7 @@
     <div class="container">
         <div class="header">
             <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
-            <h1>🎓 Formulaire Animateur d'Atelier0.45</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier0.46</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Les questions d'évaluation sont obligatoires. Le support de présentation est facultatif mais fortement recommandé.
@@ -234,7 +234,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxg-UTzu5ka_xH-ykfRWpBoaVHj69Nzw6_yXd-YYFtz6RGzwtVjCzMsNkzMyl1uMriyZQ/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxDQxJs8Ojf-fj-9QQ5RsEUEhmirxmbVgZj8nWSBlZkn3Qj4do9zr_J_AV-c_O4b_Ystg/exec';
         const FORM_BASE_URL = 'https://aamb-accescontrole.github.io/Questionnaires-Informations-Atelier/';
 
         let editToken = '';
@@ -263,7 +263,6 @@
         }
 
         function showStep2() {
-            // ✅ MODIFICATION 4 : 'remarks' retiré de la liste des champs obligatoires
             const fields = ['company', 'trainerName', 'trainerRole', 'workshopTitle', 'email', 'description'];
             for (const id of fields) {
                 const el = document.getElementById(id);
@@ -275,6 +274,19 @@
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim())) {
                 alert('Adresse e-mail invalide.'); return;
             }
+            
+            // ✅ Vérification du logo obligatoire avant de passer à l'étape 2
+            const logoFile = document.getElementById('logoUpload').files[0];
+            if (!logoFile && !existingLogoName) {
+                alert('Veuillez uploader le logo de l\'entreprise.');
+                document.getElementById('logoUpload').focus();
+                return;
+            }
+            if (logoFile && logoFile.size > 3 * 1024 * 1024) {
+                alert('⚠️ Le fichier du logo est trop lourd (' + (logoFile.size / (1024 * 1024)).toFixed(1) + ' Mo).\nTaille max : 3 Mo.');
+                return;
+            }
+            
             document.getElementById('step1-section').classList.add('hidden');
             document.getElementById('step2-section').classList.remove('hidden');
             window.scrollTo(0, 0);
@@ -470,8 +482,8 @@
                 
                 setTimeout(() => {
                     overlay.classList.remove('active');
-                    document.getElementById('step1-section').classList.add('hidden');
-                    document.getElementById('step2-section').classList.remove('hidden');
+                    document.getElementById('step1-section').classList.remove('hidden');
+                    document.getElementById('step2-section').classList.add('hidden');
                 }, 500);
                 
             } catch (error) {
