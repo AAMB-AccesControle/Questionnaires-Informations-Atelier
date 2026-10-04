@@ -141,7 +141,7 @@
     <div class="container">
         <div class="header">
             <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
-            <h1>🎓 Formulaire Animateur d'Atelier0.47</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier0.48</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Les questions d'évaluation sont obligatoires. Le support de présentation est facultatif mais fortement recommandé.
@@ -283,15 +283,24 @@
             
             // ✅ Vérification du logo obligatoire avant de passer à l'étape 2
             const logoFile = document.getElementById('logoUpload').files[0];
+            
+            // En mode édition, on peut avoir un logo existant
             if (!logoFile && !existingLogoName) {
-                alert('Veuillez uploader le logo de l\'entreprise.');
+                alert('⚠️ Veuillez uploader le logo de l\'entreprise (format JPG, PNG, SVG - max 3 Mo).');
                 document.getElementById('logoUpload').focus();
+                document.getElementById('logoUpload').style.borderColor = '#e74c3c';
                 return;
             }
+            
+            // Vérification de la taille si un fichier est sélectionné
             if (logoFile && logoFile.size > 3 * 1024 * 1024) {
                 alert('⚠️ Le fichier du logo est trop lourd (' + (logoFile.size / (1024 * 1024)).toFixed(1) + ' Mo).\nTaille max : 3 Mo.');
+                document.getElementById('logoUpload').style.borderColor = '#e74c3c';
                 return;
             }
+            
+            // Reset de la bordure si tout est OK
+            document.getElementById('logoUpload').style.borderColor = '#ddd';
             
             document.getElementById('step1-section').classList.add('hidden');
             document.getElementById('step2-section').classList.remove('hidden');
