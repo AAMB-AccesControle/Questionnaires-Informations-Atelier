@@ -141,7 +141,7 @@
     <div class="container">
         <div class="header">
             <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
-            <h1>🎓 Formulaire Animateur d'Atelier0.48</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier0.49</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Les questions d'évaluation sont obligatoires. Le support de présentation est facultatif mais fortement recommandé.
@@ -268,45 +268,71 @@
             }
         }
 
+
+
+        
         function showStep2() {
-            const fields = ['company', 'trainerName', 'trainerRole', 'workshopTitle', 'email', 'description'];
-            for (const id of fields) {
-                const el = document.getElementById(id);
-                if (!el.value.trim()) {
-                    alert('Veuillez remplir tous les champs obligatoires.');
-                    el.focus(); el.style.borderColor = '#e74c3c'; return;
-                } else { el.style.borderColor = '#ddd'; }
+            alert("🔵 ÉTAPE 1 : Fonction showStep2() appelée");
+            
+            try {
+                const fields = ['company', 'trainerName', 'trainerRole', 'workshopTitle', 'email', 'description'];
+                alert("🔵 ÉTAPE 2 : Vérification des champs : " + fields.join(', '));
+                
+                for (const id of fields) {
+                    const el = document.getElementById(id);
+                    if (!el) {
+                        alert("❌ ERREUR : L'élément avec l'ID '" + id + "' n'existe pas dans le HTML !");
+                        return;
+                    }
+                    if (!el.value.trim()) {
+                        alert('⚠️ Veuillez remplir le champ : ' + id);
+                        el.focus();
+                        el.style.borderColor = '#e74c3c';
+                        return;
+                    } else {
+                        el.style.borderColor = '#ddd';
+                    }
+                }
+                alert("✅ ÉTAPE 3 : Tous les champs texte sont OK");
+                
+                const emailVal = document.getElementById('email').value.trim();
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+                    alert('⚠️ Adresse e-mail invalide.');
+                    return;
+                }
+                alert("✅ ÉTAPE 4 : Email valide");
+                
+                const logoFile = document.getElementById('logoUpload').files[0];
+                alert("🔵 ÉTAPE 5 : Logo sélectionné = " + (logoFile ? logoFile.name : 'AUCUN') + " | existingLogoName = " + (existingLogoName || 'VIDE'));
+                
+                if (!logoFile && !existingLogoName) {
+                    alert('⚠️ Veuillez uploader le logo de l\'entreprise (format JPG, PNG, SVG - max 3 Mo).');
+                    document.getElementById('logoUpload').style.borderColor = '#e74c3c';
+                    return;
+                }
+                
+                if (logoFile && logoFile.size > 3 * 1024 * 1024) {
+                    alert('⚠️ Le fichier du logo est trop lourd (' + (logoFile.size / (1024 * 1024)).toFixed(1) + ' Mo). Taille max : 3 Mo.');
+                    document.getElementById('logoUpload').style.borderColor = '#e74c3c';
+                    return;
+                }
+                alert("✅ ÉTAPE 6 : Logo OK");
+                
+                alert("🔵 ÉTAPE 7 : Passage à l'étape 2...");
+                document.getElementById('step1-section').classList.add('hidden');
+                document.getElementById('step2-section').classList.remove('hidden');
+                window.scrollTo(0, 0);
+                alert("✅ SUCCÈS : Vous êtes maintenant à l'étape 2 !");
+                
+            } catch (error) {
+                alert("❌ ERREUR CRITIQUE dans showStep2() : " + error.message + "\n\n" + error.stack);
             }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim())) {
-                alert('Adresse e-mail invalide.'); return;
-            }
-            
-            // ✅ Vérification du logo obligatoire avant de passer à l'étape 2
-            const logoFile = document.getElementById('logoUpload').files[0];
-            
-            // En mode édition, on peut avoir un logo existant
-            if (!logoFile && !existingLogoName) {
-                alert('⚠️ Veuillez uploader le logo de l\'entreprise (format JPG, PNG, SVG - max 3 Mo).');
-                document.getElementById('logoUpload').focus();
-                document.getElementById('logoUpload').style.borderColor = '#e74c3c';
-                return;
-            }
-            
-            // Vérification de la taille si un fichier est sélectionné
-            if (logoFile && logoFile.size > 3 * 1024 * 1024) {
-                alert('⚠️ Le fichier du logo est trop lourd (' + (logoFile.size / (1024 * 1024)).toFixed(1) + ' Mo).\nTaille max : 3 Mo.');
-                document.getElementById('logoUpload').style.borderColor = '#e74c3c';
-                return;
-            }
-            
-            // Reset de la bordure si tout est OK
-            document.getElementById('logoUpload').style.borderColor = '#ddd';
-            
-            document.getElementById('step1-section').classList.add('hidden');
-            document.getElementById('step2-section').classList.remove('hidden');
-            window.scrollTo(0, 0);
         }
 
+
+
+
+        
         function showStep1() {
             document.getElementById('step2-section').classList.add('hidden');
             document.getElementById('step1-section').classList.remove('hidden');
