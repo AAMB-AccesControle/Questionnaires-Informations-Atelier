@@ -147,7 +147,7 @@
     <div class="container">
         <div class="header">
             <div class="header-logo-wrapper"><img src="logo-aamb.png" alt="Logo AAMB"></div>
-            <h1>🎓 Formulaire Animateur d'Atelier v0.52</h1>
+            <h1>🎓 Formulaire Animateur d'Atelier v0.53</h1>
             <div class="header-subtitle">
                 Merci de compléter ce formulaire pour valider votre intervention.<br><br>
                 <strong>Important :</strong> Les questions d'évaluation sont obligatoires. Le support de présentation est facultatif mais fortement recommandé.
@@ -180,8 +180,19 @@
                         <label>Remarques ou informations complémentaires</label>
                         <textarea id="remarks" rows="3" placeholder="Besoins spécifiques, matériel particulier..."></textarea>
                     </div>
-                </div>
-                <div class="buttons"><button class="btn btn-primary" onclick="showStep2()">Continuer vers le Support et l'Évaluation →</button></div>
+                    
+                    <!-- ✅ NOUVELLE QUESTION : 2 sessions -->
+                    <div class="form-group">
+                        <label class="required">Selon les créneaux disponibles et la demande, seriez-vous d'accord pour animer 2 sessions ?</label>
+                        <div class="radio-group">
+                            <label class="radio-item"><input type="radio" name="twoSessions" value="OUI" required> Oui</label>
+                            <label class="radio-item"><input type="radio" name="twoSessions" value="NON" required> Non</label>
+                        </div>
+                    </div>
+                    
+                    </div>
+                    <div class="buttons"><button class="btn btn-primary" onclick="showStep2()">Continuer vers le Support et l'Évaluation →</button></div>
+                    
             </div>
             
             <!-- ÉTAPE 2 -->
@@ -241,7 +252,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGGy5ikQfgIjOs0wfg_wIgkKbG65w3gJqx1ByTTB5TMKFdi8LR67UB_oxEeQXsTx5slg/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx7cIL6LoS-7_3ILXA8uSLj-36y5lLigXi3q4RMYNwacWOyXQSqcAx8Hk3KNpBHQ0R2fA/exec';
         const FORM_BASE_URL = 'https://aamb-accescontrole.github.io/Questionnaires-Informations-Atelier/';
 
         let editToken = '';
@@ -306,6 +317,13 @@
             }
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim())) {
                 alert('Adresse e-mail invalide.'); return;
+            }
+            
+            // ✅ Validation de la nouvelle question "2 sessions"
+            const twoSessions = document.querySelector('input[name="twoSessions"]:checked');
+            if (!twoSessions) {
+                alert('Veuillez répondre à la question sur les 2 sessions.');
+                return;
             }
             
             const logoFile = document.getElementById('logoUpload').files[0];
@@ -405,6 +423,7 @@
                     email: document.getElementById('email').value.trim(),
                     description: document.getElementById('description').value.trim(),
                     remarks: document.getElementById('remarks').value.trim(),
+                    twoSessions: document.querySelector('input[name="twoSessions"]:checked').value,
                     diffusionAgreement: diffusionAgreement.value,
                     logoFile: logoBase64 ? { name: logoFile.name, type: logoFile.type, base64: logoBase64 } : (existingLogoName ? { name: existingLogoName, toDelete: false } : { name: '', toDelete: true }),
                     supportFile: supportBase64 ? { name: supportFile.name, type: supportFile.type, base64: supportBase64 } : (existingSupportName ? { name: existingSupportName, toDelete: false } : { name: '', toDelete: true }),
@@ -479,6 +498,12 @@
                 document.getElementById('email').value = data['Email'] || '';
                 document.getElementById('description').value = data['Description'] || '';
                 document.getElementById('remarks').value = data['Remarques'] || '';
+                
+                const twoSessions = data['2 Sessions'];
+                if (twoSessions) {
+                    const radio = document.querySelector(`input[name="twoSessions"][value="${twoSessions}"]`);
+                    if (radio) radio.checked = true;
+                }
                 
                 const diffAgreement = data['Accord Diffusion'];
                 if (diffAgreement) {
